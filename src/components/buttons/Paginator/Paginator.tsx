@@ -1,16 +1,18 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { colors } from "@utils/constants/colors";
 import { Button } from "@components/buttons/Button/Button";
 import { Select } from "@components/inputs/Select/Select";
 import { Paragraphy } from "@components/layouts/Typography/Typography";
 import { ChevronLeftIcon, ChevronRightIcon } from "@utils/constants/icons";
+import { PaginatorContext } from "contexts/PaginatorContext";
 
 const PaginatorWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+  height: 36px;
 `;
 
 const PaginatorInfo = styled.div`
@@ -28,7 +30,7 @@ const PaginatorInfo = styled.div`
   }
 `;
 
-const PaginatorSelectWrapper = styled.div`
+const PaginatorLimitSelectorWrapper = styled.div`
   width: 76px;
   height: 36px;
 
@@ -76,50 +78,90 @@ const PaginatorActions = styled.div`
 `;
 
 export const Paginator: React.FC<{
-  itemsLength: number;
-  limit: number;
-}> = ({ itemsLength, limit }) => {
+  totalItems: number;
+  labelCount?: boolean;
+  limitSelector?: boolean;
+}> = ({ totalItems, labelCount = true, limitSelector = true }) => {
+  const { limit, setOffset, setLimit } = useContext(PaginatorContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentOffset, setCurrentOffset] = useState();
+
   const step = 5;
-  const maxSteps = 2;
-  const totalPages = Math.ceil(itemsLength / step);
+  const totalPages = Math.ceil(totalItems / limit);
 
   const handleGenerateStepItems = () => {
     let stepItems = {};
     let prevStep = step;
 
-    for (let index = 0; index < maxSteps; index++) {
+    for (let index = 0; index <= totalItems; index++) {
       stepItems = { ...stepItems, [prevStep]: String(prevStep) };
       prevStep += step;
+      index += step;
     }
 
     return stepItems;
   };
 
+  const handlePaginatorButton = (action: "decrement" | "increment") => {
+    if (currentPage <= 1 && action === "decrement") return;
+    else if (currentPage >= totalPages && action === "increment") return;
+
+    setCurrentPage((prevPage) =>
+      action === "increment" ? prevPage + 1 : prevPage - 1
+    );
+    setOffset((prevOffset) =>
+      action === "increment" ? prevOffset + limit : prevOffset - limit
+    );
+  };
+
+  useEffect(() => {
+    if (currentPage <= 1) {
+      setOffset(0);
+    }
+  }, [currentPage]);
+
+  const handleLimitSelector = (value: string | undefined) => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
+    }
+
+    setLimit(Number(value) || limit);
+  };
+
   return (
     <PaginatorWrapper>
       <PaginatorInfo>
-        <Paragraphy>
-          Mostrando {limit} de {itemsLength} registros
-        </Paragraphy>
-        <PaginatorSelectWrapper>
-          <Select
-            value={String(step)}
-            height="36px"
-            noBackground
-            items={handleGenerateStepItems()}
-          />
-        </PaginatorSelectWrapper>
+        {labelCount && (
+          <Paragraphy>
+            Mostrando {limit} de {totalItems} registros
+          </Paragraphy>
+        )}
+
+        {limitSelector && (
+          <PaginatorLimitSelectorWrapper>
+            <Select
+              onChange={handleLimitSelector}
+              value={String(step)}
+              height="36px"
+              noBackground
+              items={handleGenerateStepItems()}
+            />
+          </PaginatorLimitSelectorWrapper>
+        )}
       </PaginatorInfo>
       <PaginatorActions>
-        <PaginatorButton direction="left">
+        <PaginatorButton
+          onClick={() => handlePaginatorButton("decrement")}
+          direction="left"
+        >
           <ChevronLeftIcon />
         </PaginatorButton>
         <Paragraphy>
           {currentPage} de {totalPages}
         </Paragraphy>
-        <PaginatorButton direction="right">
+        <PaginatorButton
+          onClick={() => handlePaginatorButton("increment")}
+          direction="right"
+        >
           <ChevronRightIcon />
         </PaginatorButton>
       </PaginatorActions>

@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
-import { memo, ReactNode } from "react";
+import { memo, ReactNode, useContext } from "react";
 
 import { colors } from "../../../utils/constants/colors";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
 import { Small, Span } from "../Typography/Typography";
+import { PaginatorContext } from "contexts/PaginatorContext";
 
 type TableRowStyles = {
   inactive?: boolean;
@@ -78,17 +79,16 @@ type TableListProps = {
     index: number
   ) => JSX.Element | undefined;
   additionalCell?: JSX.Element | JSX.Element[];
-  limit?: number;
-  offset?: number;
 } & TableRowStyles;
 
 const TableListView: React.FC<TableListProps> = ({
   columns = [],
   rows = [],
-  limit = rows.length,
-  offset = 0,
+
   ...props
 }) => {
+  const { offset = 0, limit = rows.length } = useContext(PaginatorContext);
+
   const handleSerializeHeaders = () => {
     return columns.map((column, index) => (
       <TableHeader width={column.width} key={index}>
@@ -99,8 +99,13 @@ const TableListView: React.FC<TableListProps> = ({
 
   const handleSerializeRows = () => {
     return rows.map((row, index) => {
-      if (index < limit) {
+      if (index >= offset) {
         const cells: Array<ReactNode> = [];
+
+        console.log(offset);
+
+        if (index >= offset + limit) return;
+
         columns.forEach((column, index) => {
           let cell = null;
 

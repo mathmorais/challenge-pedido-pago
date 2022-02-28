@@ -16,6 +16,8 @@ import { IDropdownItem } from "../../../interfaces/IDropdownItem";
 import { Input } from "../../inputs/Input/Input";
 import { TableCell, TableList } from "../../layouts/TableList/TableList";
 import { Dropdown } from "../../inputs/Dropdown/Dropdown";
+import { PaginatorContextProvider } from "contexts/PaginatorContext";
+import { Paginator } from "@components/buttons/Paginator/Paginator";
 
 const RolesContainer = styled.div`
   ${Paragraphy}:first-of-type {
@@ -32,6 +34,7 @@ export const RolesTab: React.FC = () => {
   const router = useRouter();
   const { roles, handleGetRoles, handleFilterRoles } =
     useContext(OrganizationContext);
+
   const columns: ITableColumn[] = [
     {
       field: "name",
@@ -74,8 +77,8 @@ export const RolesTab: React.FC = () => {
   ];
 
   useEffect(() => {
-    handleFilterRoles("");
     handleGetRoles();
+    handleFilterRoles("");
   }, []);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -92,15 +95,22 @@ export const RolesTab: React.FC = () => {
         />
       </RoleSearchSection>
       <Paragraphy>Listagem de colaboradores</Paragraphy>
-      <TableList
-        additionalCell={
-          <TableCell alignRight>
-            <Dropdown items={dropdownItems} />
-          </TableCell>
-        }
-        rows={roles}
-        columns={columns}
-      />
+      <PaginatorContextProvider>
+        <TableList
+          additionalCell={
+            <TableCell alignRight>
+              <Dropdown items={dropdownItems} />
+            </TableCell>
+          }
+          rows={roles}
+          columns={columns}
+        />
+        <Paginator
+          labelCount={false}
+          limitSelector={false}
+          totalItems={roles.length}
+        />
+      </PaginatorContextProvider>
     </RolesContainer>
   );
 };

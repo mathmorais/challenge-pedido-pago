@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "../../../utils/constants/colors";
 import { Button } from "../../buttons/Button/Button";
 import { Span } from "../../layouts/Typography/Typography";
@@ -90,12 +90,22 @@ type SelectProps = {
   value?: string;
   label?: string;
   items: { [key: string]: string };
+  onChange?: (value: string | undefined) => void;
 } & SelectFieldsetStyles &
   SelectWrapperStyles;
 
-export const Select: React.FC<SelectProps> = ({ label, items, ...props }) => {
+export const Select: React.FC<SelectProps> = ({
+  label,
+  items,
+  onChange,
+  ...props
+}) => {
   const [value, setValue] = useState<string | undefined>(props.value);
   const [active, setActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    onChange && onChange(value);
+  }, [value]);
 
   const handleSerializeMenuItems = () => {
     return Object.keys(items).map((item, index) => (

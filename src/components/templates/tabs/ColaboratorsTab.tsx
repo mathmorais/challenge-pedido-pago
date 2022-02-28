@@ -2,9 +2,9 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { FormEvent, useContext, useEffect } from "react";
 
-import { IDropdownItem } from "../../../interfaces/IDropdownItem";
+import { IDropdownItem } from "@interfaces/IDropdownItem";
 import { TableCell, TableList } from "../../layouts/TableList/TableList";
-import { ITableColumn } from "../../../interfaces/ITableColumn";
+import { ITableColumn } from "@interfaces/ITableColumn";
 import { OrganizationContext } from "../../../contexts/OrganizationContext";
 import { Paragraphy, Small, Span } from "../../layouts/Typography/Typography";
 import { colors } from "../../../utils/constants/colors";
@@ -13,6 +13,7 @@ import { Dropdown } from "../../inputs/Dropdown/Dropdown";
 import { Paginator } from "../../buttons/Paginator/Paginator";
 import { EyeIcon, TrashIcon } from "../../../utils/constants/icons";
 import { Input } from "../../inputs/Input/Input";
+import { PaginatorContextProvider } from "contexts/PaginatorContext";
 
 const ColaboratorsTabContainer = styled.div`
   & > ${Paragraphy} {
@@ -42,6 +43,7 @@ const ColaboratorStatus = styled(Span)<{
 
 export const ColaboratorsTab: React.FC = () => {
   const { agents, handleFilterAgents } = useContext(OrganizationContext);
+
   const router = useRouter();
   const columns: ITableColumn[] = [
     {
@@ -127,18 +129,19 @@ export const ColaboratorsTab: React.FC = () => {
         />
       </ColaboratorsSearchSection>
       <Paragraphy>Listagem de colaboradores</Paragraphy>
-      <TableList
-        limit={6}
-        rows={agents}
-        columns={columns}
-        cellSwap={handleCellSwitching}
-        additionalCell={
-          <TableCell alignRight>
-            <Dropdown items={items} />
-          </TableCell>
-        }
-      />
-      <Paginator itemsLength={agents.length} limit={5} />
+      <PaginatorContextProvider>
+        <TableList
+          rows={agents}
+          columns={columns}
+          cellSwap={handleCellSwitching}
+          additionalCell={
+            <TableCell alignRight>
+              <Dropdown items={items} />
+            </TableCell>
+          }
+        />
+        <Paginator totalItems={agents?.length} />
+      </PaginatorContextProvider>
     </ColaboratorsTabContainer>
   );
 };

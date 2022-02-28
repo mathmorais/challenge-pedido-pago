@@ -1,0 +1,12 @@
+{
+  "name": "Desafio - Pedido Pago",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "display": "standalone"
+}

@@ -14,6 +14,8 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        <link rel="shortcut icon" href="/favicon-16x16.ico" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <body>
         <Main />

@@ -1,15 +1,13 @@
 import axios from "axios";
-import type { NextPage, GetServerSideProps, GetStaticProps } from "next";
-import { Layout } from "../components/Layout";
-import { RolesTab } from "../components/tabs/RolesTab";
-import { ColaboratorsTab } from "../components/tabs/ColaboratorsTab";
-import { Tabs } from "../components/Tabs";
-import { Table } from "../components/Table";
-import { Title } from "../components/Typography";
-import { OrganizationContextProvider } from "../context/OrganizationContext";
+import type { NextPage, GetServerSideProps } from "next";
+import { ColaboratorsTab } from "../components/templates/tabs/ColaboratorsTab";
+import { OrganizationContextProvider } from "../contexts/OrganizationContext";
 import { IAgents } from "../interfaces/IAgents";
 import { ITab } from "../interfaces/ITab";
-import { TablePageTemplate } from "../components/TablePageTemplate";
+import { TablePageTemplate } from "../components/templates/pages/TablePageTemplate";
+import { RolesTab } from "../components/templates/tabs/RolesTab";
+import { Layout } from "../components/layouts/Layout/Layout";
+import { Tabs } from "../components/layouts/Tabs/Tabs";
 
 type ColaboratorsListProps = {
   agents: IAgents[];
@@ -28,7 +26,7 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
   ];
 
   return (
-    <Layout>
+    <Layout pageTitle="Organização - Pedido Pago">
       <TablePageTemplate title="Organização">
         <OrganizationContextProvider initialValue={agents}>
           <Tabs tabs={tabs} />
@@ -40,14 +38,14 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
 
 export default ColaboratorsList;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const url = `${process.env.API_URL}/agents`;
+
   const { data } = await axios.get(url);
 
   return {
     props: {
       agents: data.items,
     },
-    revalidate: 60 * 5, // 5 minutes
   };
 };

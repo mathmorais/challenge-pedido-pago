@@ -1,25 +1,25 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import { ColaboratorProfile } from "../../components/ColaboratorProfile";
-import { Layout } from "../../components/Layout";
-import { TablePageTemplate } from "../../components/TablePageTemplate";
+import { ColaboratorInfo } from "../../components/templates/pages/ColaboratorInfo";
+import { Layout } from "../../components/layouts/Layout/Layout";
+import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
 import { IAgent } from "../../interfaces/IAgent";
 
 type ColaboratorInfoProps = {
   agent: IAgent;
 };
 
-const ColaboratorInfo: React.FC<ColaboratorInfoProps> = ({ agent }) => {
+const Colaborator: React.FC<ColaboratorInfoProps> = ({ agent }) => {
   return (
-    <Layout>
+    <Layout pageTitle="Colaborador - Pedido Pago">
       <TablePageTemplate withBackButton title="Detalhes do colaborador">
-        <ColaboratorProfile colaborator={agent} />
+        <ColaboratorInfo colaborator={agent} />
       </TablePageTemplate>
     </Layout>
   );
 };
 
-export default ColaboratorInfo;
+export default Colaborator;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const colaboratorId = context.params?.id || "1";

@@ -9,7 +9,6 @@ export default async function handler(
 
   try {
     const response = await axios.get(url);
-    console.log(response);
     res.status(200).json(response.data);
   } catch (err) {
     if (axios.isAxiosError(err)) {

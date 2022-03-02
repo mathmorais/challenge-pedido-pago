@@ -42,6 +42,7 @@ const SectionRow = styled.div`
   display: inline-flex;
   gap: 24px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 `;
 
 const ProfileSectionCard = styled.div`
@@ -56,7 +57,7 @@ const ProfileSectionCard = styled.div`
 
 const ProfileSelectionCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(318px, 1fr));
+  grid-template-columns: repeat(auto-fill, 1fr);
   gap: 24px;
   grid-template-rows: 1fr 1fr;
 `;
@@ -97,6 +98,7 @@ export const ColaboratorInfo: React.FC<{ colaborator: IAgent }> = ({
         </SectionRow>
       </Section>
       <ProfileSectionCard>
+        <Subtitle>Dados organizacionais</Subtitle>
         <ProfileSelectionCardGrid>
           <Select
             value={colaborator.department}

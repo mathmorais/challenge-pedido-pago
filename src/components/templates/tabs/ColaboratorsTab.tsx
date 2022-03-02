@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useContext, useEffect } from "react";
 
 import { IDropdownItem } from "@interfaces/IDropdownItem";
-import { TableCell, TableList } from "../../layouts/TableList/TableList";
+import { TableList } from "../../layouts/TableList/TableList";
 import { ITableColumn } from "@interfaces/ITableColumn";
 import { OrganizationContext } from "../../../contexts/OrganizationContext";
 import { Paragraphy, Small, Span } from "../../layouts/Typography/Typography";
@@ -14,6 +14,10 @@ import { Paginator } from "../../buttons/Paginator/Paginator";
 import { EyeIcon, TrashIcon } from "../../../utils/constants/icons";
 import { Input } from "../../inputs/Input/Input";
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
+import { TableCell } from "@components/layouts/TableList/TableList.desktop";
+import { DropdownDesktop } from "@components/inputs/Dropdown/Dropdown.desktop";
+import { DropdownContextProvider } from "contexts/DropdownContext";
+import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 
 const ColaboratorsTabContainer = styled.div`
   & > ${Paragraphy} {
@@ -130,17 +134,23 @@ export const ColaboratorsTab: React.FC = () => {
       </ColaboratorsSearchSection>
       <Paragraphy>Listagem de colaboradores</Paragraphy>
       <PaginatorContextProvider>
-        <TableList
-          rows={agents}
-          columns={columns}
-          cellSwap={handleCellSwitching}
-          additionalCell={
-            <TableCell alignRight>
-              <Dropdown items={items} />
-            </TableCell>
-          }
-        />
-        <Paginator totalItems={agents?.length} />
+        <DropdownContextProvider>
+          <TableList
+            rows={agents}
+            columns={columns}
+            dropdown={{
+              items: items,
+            }}
+            cellSwap={handleCellSwitching}
+            additionalCell={
+              <TableCell alignRight>
+                <DropdownDesktop items={items} />
+              </TableCell>
+            }
+          />
+          <Paginator totalItems={agents.length} labelCount limitSelector />
+          <DropdownMobile />
+        </DropdownContextProvider>
       </PaginatorContextProvider>
     </ColaboratorsTabContainer>
   );

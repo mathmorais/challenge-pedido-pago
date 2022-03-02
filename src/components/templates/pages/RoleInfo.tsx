@@ -1,9 +1,10 @@
+import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import styled from "@emotion/styled";
 import { IRole } from "../../../interfaces/IRole";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
 import { Checkbox } from "../../buttons/Checkbox/Checkbox";
 import { Input } from "../../inputs/Input/Input";
-import { TableCell, TableList } from "../../layouts/TableList/TableList";
+import { TableList } from "../../layouts/TableList/TableList";
 import { Paragraphy } from "../../layouts/Typography/Typography";
 
 const RoleInfoContainer = styled.div`

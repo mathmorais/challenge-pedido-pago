@@ -15,9 +15,8 @@ const ButtonContainer = styled.button`
   }
 `;
 
-export const Button: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  ...props
-}) => {
+export type ButtonAttributes = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const Button: React.FC<ButtonAttributes> = ({ children, ...props }) => {
   return <ButtonContainer {...props}>{children}</ButtonContainer>;
 };

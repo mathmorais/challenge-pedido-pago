@@ -30,17 +30,17 @@ const ProfileContainer = styled.div`
   gap: 10px;
 `;
 
-type ProfileProps = {
-  profilePhoto: string;
-  fullName: string;
+export type ProfileProps = {
+  name: string;
+  avatarUrl: string;
 };
 
-export const Profile: React.FC<ProfileProps> = ({ fullName, profilePhoto }) => {
+export const Profile: React.FC<ProfileProps> = ({ name, avatarUrl }) => {
   return (
     <ProfileContainer>
-      <Avatar alt={fullName} src={profilePhoto} />
+      <Avatar alt={name} src={avatarUrl} />
       <ProfileInfo>
-        <Span>{fullName}</Span>
+        <Span>{name}</Span>
         <LinkWrapper href="#">meus dados</LinkWrapper>
       </ProfileInfo>
     </ProfileContainer>

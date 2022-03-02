@@ -14,13 +14,16 @@ import {
 } from "../../../utils/constants/icons";
 import { IDropdownItem } from "../../../interfaces/IDropdownItem";
 import { Input } from "../../inputs/Input/Input";
-import { TableCell, TableList } from "../../layouts/TableList/TableList";
+import { TableList } from "../../layouts/TableList/TableList";
 import { Dropdown } from "../../inputs/Dropdown/Dropdown";
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
 import { Paginator } from "@components/buttons/Paginator/Paginator";
+import { TableCell } from "@components/layouts/TableList/TableList.desktop";
+import { DropdownContextProvider } from "contexts/DropdownContext";
+import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 
 const RolesContainer = styled.div`
-  ${Paragraphy}:first-of-type {
+  & > ${Paragraphy} {
     margin: 40px 0;
     font-weight: 600;
   }
@@ -52,7 +55,7 @@ export const RolesTab: React.FC = () => {
     },
   ];
 
-  const dropdownItems: IDropdownItem[] = [
+  const items: IDropdownItem[] = [
     {
       enabled: true,
       label: "Ver cargo",
@@ -94,22 +97,25 @@ export const RolesTab: React.FC = () => {
           placeholder="Pesquise por cargos"
         />
       </RoleSearchSection>
-      <Paragraphy>Listagem de colaboradores</Paragraphy>
+      <Paragraphy>Listagem de cargos</Paragraphy>
       <PaginatorContextProvider>
-        <TableList
-          additionalCell={
-            <TableCell alignRight>
-              <Dropdown items={dropdownItems} />
-            </TableCell>
-          }
-          rows={roles}
-          columns={columns}
-        />
-        <Paginator
-          labelCount={false}
-          limitSelector={false}
-          totalItems={roles.length}
-        />
+        <DropdownContextProvider>
+          <TableList
+            additionalCell={
+              <TableCell alignRight>
+                <Dropdown items={items} />
+              </TableCell>
+            }
+            rows={roles}
+            columns={columns}
+          />
+          <Paginator
+            labelCount={false}
+            limitSelector={false}
+            totalItems={roles.length}
+          />
+          <DropdownMobile />
+        </DropdownContextProvider>
       </PaginatorContextProvider>
     </RolesContainer>
   );

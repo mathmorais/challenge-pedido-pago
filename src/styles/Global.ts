@@ -9,7 +9,17 @@ export const GlobalStyles = css`
   }
 
   &:root {
+  }
+
+  html {
     font-size: 62.5%;
+
+    @media (max-width: 1080px) {
+      font-size: 62.5%;
+    }
+    @media (max-width: 720px) {
+      font-size: 62.5%;
+    }
   }
 
   body {

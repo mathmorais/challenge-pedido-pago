@@ -9,6 +9,10 @@ const SidebarContainer = styled.aside`
   height: 100%;
   background: ${colors.neutral.white};
   box-shadow: ${shadows.level1};
+
+  @media only screen and (max-width: 960px) {
+    display: none;
+  }
 `;
 
 export const Sidebar = () => {

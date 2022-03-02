@@ -11,6 +11,10 @@ const TableContainer = styled.div`
   background: ${colors.neutral.white};
   box-shadow: ${shadows.level1};
   border-radius: 8px;
+
+  @media only screen and (max-width: 960px) {
+    padding: 50px 16px;
+  }
 `;
 
 export const Table: React.FC = ({ children }) => {

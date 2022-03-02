@@ -27,7 +27,7 @@ export class UnitsFormatter {
     return `+${phone.ddd} ${phone.ddi} ${number.join("")} `;
   };
 
-  formatBirthDate = (birthDate: string) => {
+  formatBirthDate = (birthDate: Date) => {
     const date = new Date(birthDate);
     const month = date.getMonth();
 

@@ -25,6 +25,10 @@ export const Subtitle = styled.p`
 export const Title = styled.h2`
   font-size: ${typography.title.size};
   font-weight: ${typography.title.weight};
+
+  @media only screen and (max-width: 960px) {
+    font-size: 2.4rem;
+  }
 `;
 
 export const ExtraTitle = styled.h1`

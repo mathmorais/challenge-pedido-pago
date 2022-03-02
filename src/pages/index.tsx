@@ -8,11 +8,8 @@ import { TablePageTemplate } from "../components/templates/pages/TablePageTempla
 import { RolesTab } from "../components/templates/tabs/RolesTab";
 import { Layout } from "../components/layouts/Layout/Layout";
 import { Tabs } from "../components/layouts/Tabs/Tabs";
-import { Paginator } from "@components/buttons/Paginator/Paginator";
-import {
-  PaginatorContext,
-  PaginatorContextProvider,
-} from "contexts/PaginatorContext";
+import { DropdownContextProvider } from "contexts/DropdownContext";
+import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 
 type ColaboratorsListProps = {
   agents: IAgents[];

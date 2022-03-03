@@ -5,7 +5,7 @@ import { DropdownDesktop } from "./Dropdown.desktop";
 import { DropdownMobile } from "./Dropdown.mobile";
 
 export type DropdownProps = {
-  items: IDropdownItem[];
+  items?: IDropdownItem[];
   mobile?: {
     label?: string;
     caller?: ReactNode;

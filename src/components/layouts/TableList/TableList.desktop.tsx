@@ -1,18 +1,19 @@
 import styled from "@emotion/styled";
-import { memo, ReactNode, useContext } from "react";
+import { ReactNode, useContext } from "react";
 
 import { colors } from "../../../utils/constants/colors";
-import { ITableColumn } from "../../../interfaces/ITableColumn";
-import { Small, Span } from "../Typography/Typography";
+import { Small } from "../Typography/Typography";
 import { PaginatorContext } from "contexts/PaginatorContext";
-import { TableListProps } from "./TableList.mobile";
+import { TableListProps } from "./TableList";
+import { AgentStatus } from "@interfaces/IAgent";
 
 type TableRowStyles = {
   inactive?: boolean;
+  cellSpacing?: number;
 };
 
 type TableCellStyles = {
-  width?: number;
+  width?: string | number;
   bold?: boolean;
   alignRight?: boolean;
 };
@@ -32,15 +33,25 @@ const Table = styled.table`
 `;
 
 const TableHead = styled.thead`
+  width: 100%;
+
   border: 1px solid ${colors.neutral.neutral2};
   border-radius: 8px 8px 0px 0px;
-  padding: 16px;
+
+  tr {
+    display: flex;
+    width: inherit;
+  }
 `;
 
-const TableHeader = styled.th<{ width?: number }>`
-  display: inline-block;
-  width: ${(props) => props.width}px;
+type TableListColumnsStyle = {
+  cellSpacing?: number;
+  width?: string | number;
+};
 
+const TableHeader = styled.th<TableListColumnsStyle>`
+  padding-right: ${(props) => props.cellSpacing}px;
+  width: ${(props) => props.width};
   ${Small} {
     font-weight: 600;
   }
@@ -58,29 +69,26 @@ const TableRow = styled.tr<TableRowStyles>`
 
 export const TableCell = styled.td<TableCellStyles>`
   display: inline-flex;
-  flex-direction: row;
   align-items: center;
-  width: ${(props) => props.width};
-  gap: 8px;
+  min-width: ${(props) => props.width}px;
   margin-left: ${(props) => props.alignRight && "auto"};
+  gap: 8px;
 
   ${Small} {
-    padding-right: 30.8px;
     font-weight: ${(props) => props.bold && "600"};
   }
 `;
 
-const TableListView: React.FC<TableListProps & TableRowStyles> = ({
+export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
   columns = [],
   rows = [],
-
   ...props
 }) => {
   const { offset = 0, limit = rows.length } = useContext(PaginatorContext);
 
   const handleSerializeHeaders = () => {
     return columns.map((column, index) => (
-      <TableHeader width={column.width} key={index}>
+      <TableHeader width={column.width} key={index} {...props}>
         <Small>{column.headerName}</Small>
       </TableHeader>
     ));
@@ -97,14 +105,16 @@ const TableListView: React.FC<TableListProps & TableRowStyles> = ({
           let cell = null;
 
           const handleSwapCells = (): JSX.Element => {
-            const swappedCell =
+            const swappedCellContent =
               props.cellSwap && props.cellSwap(column, row, index);
 
-            if (swappedCell) return swappedCell;
-
             return (
-              <TableCell key={index} width={column.width}>
-                <Small>{row[column.field]}</Small>
+              <TableCell width={column.width} key={index} {...props}>
+                {swappedCellContent ? (
+                  swappedCellContent
+                ) : (
+                  <Small>{row[column.field]}</Small>
+                )}
               </TableCell>
             );
           };
@@ -116,11 +126,13 @@ const TableListView: React.FC<TableListProps & TableRowStyles> = ({
         return (
           <TableRow
             {...props}
-            inactive={row.status === "inactive"}
+            inactive={row.status === AgentStatus.Inactive}
             key={props.rowIdField ? row[props.rowIdField] : index}
           >
             {[...cells]}
-            {props.additionalCell}
+            <TableCell key={index} {...props}>
+              {props.additionalCell}
+            </TableCell>
           </TableRow>
         );
       }
@@ -136,5 +148,3 @@ const TableListView: React.FC<TableListProps & TableRowStyles> = ({
     </Table>
   );
 };
-
-export const TableListDesktop = memo(TableListView);

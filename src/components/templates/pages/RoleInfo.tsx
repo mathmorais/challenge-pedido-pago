@@ -18,6 +18,10 @@ const RolefInfoRow = styled.div`
   align-items: center;
   gap: 24px;
   margin-bottom: 40px;
+
+  @media only screen and (max-width: 960px) {
+    flex-direction: column;
+  }
 `;
 
 const RoleInfoSection = styled.section`
@@ -30,27 +34,31 @@ const RoleInfoSection = styled.section`
   }
 `;
 
+enum RoleColumnFields {
+  Role = "role",
+  Read = "read",
+  Write = "write",
+  Delete = "delete",
+}
+
 export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
   const columns: ITableColumn[] = [
     {
-      field: "role",
+      field: RoleColumnFields.Role,
       headerName: "Cargo",
-      width: 400,
+      width: "100%",
     },
     {
-      field: "read",
+      field: RoleColumnFields.Read,
       headerName: "Ler",
-      width: 96,
     },
     {
-      field: "write",
+      field: RoleColumnFields.Write,
       headerName: "Editar",
-      width: 96,
     },
     {
-      field: "delete",
+      field: RoleColumnFields.Delete,
       headerName: "Excluir",
-      width: 96,
     },
   ];
 
@@ -59,12 +67,8 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     row: any,
     index: number
   ) => {
-    if (column.field !== "role") {
-      return (
-        <TableCell key={index} width={column.width}>
-          <Checkbox field={column.field} reference={row.permissions} />
-        </TableCell>
-      );
+    if (column.field !== RoleColumnFields.Role) {
+      return <Checkbox field={column.field} reference={row.permissions} />;
     }
   };
 
@@ -72,7 +76,6 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     <RoleInfoContainer>
       <RoleInfoSection>
         <Paragraphy>Dados do cargo</Paragraphy>
-
         <RolefInfoRow>
           <Input value={department} readOnly label="Departamento" />
           <Input value={name} readOnly label="Cargo" />
@@ -81,6 +84,8 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
       <RoleInfoSection>
         <Paragraphy>Listagem de permissões</Paragraphy>
         <TableList
+          cellSpacing={50.5}
+          mobileVersion={false}
           cellSwap={handleCellSwitching}
           columns={columns}
           rows={grouprules}

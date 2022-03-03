@@ -1,15 +1,22 @@
-import { DocumentTypes } from "enums/DocumentTypes";
+export enum DocumentTypes {
+  CPF = "CPF",
+}
 
-type Document = {
+export type Document = {
   type: DocumentTypes;
   number: string;
 };
 
-type Phone = {
+export type Phone = {
   ddd: string;
   ddi: string;
   number: string;
 };
+
+export enum AgentStatus {
+  Active = "active",
+  Inactive = "inactive",
+}
 
 export interface IAgent {
   id: number;
@@ -22,5 +29,5 @@ export interface IAgent {
   department: string;
   branch: string;
   role: string;
-  status: "active" | "inactive";
+  status: AgentStatus;
 }

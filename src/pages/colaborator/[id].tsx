@@ -4,7 +4,6 @@ import { ColaboratorInfo } from "../../components/templates/pages/ColaboratorInf
 import { Layout } from "../../components/layouts/Layout/Layout";
 import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
 import { IAgent } from "../../interfaces/IAgent";
-import { PlataformContextProvider } from "contexts/PlataformContext";
 
 type ColaboratorInfoProps = {
   agent: IAgent;
@@ -12,13 +11,11 @@ type ColaboratorInfoProps = {
 
 const Colaborator: React.FC<ColaboratorInfoProps> = ({ agent }) => {
   return (
-    <PlataformContextProvider>
-      <Layout pageTitle="Colaborador - Pedido Pago">
-        <TablePageTemplate withBackButton title="Detalhes do colaborador">
-          <ColaboratorInfo colaborator={agent} />
-        </TablePageTemplate>
-      </Layout>
-    </PlataformContextProvider>
+    <Layout pageTitle="Colaborador - Pedido Pago">
+      <TablePageTemplate withBackButton title="Detalhes do colaborador">
+        <ColaboratorInfo colaborator={agent} />
+      </TablePageTemplate>
+    </Layout>
   );
 };
 

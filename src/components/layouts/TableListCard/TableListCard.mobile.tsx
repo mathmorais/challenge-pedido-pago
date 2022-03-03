@@ -1,14 +1,12 @@
-import { ButtonActionMobile } from "@components/buttons/Button/variations/ButtonAction.mobile";
-import { Dropdown } from "@components/inputs/Dropdown/Dropdown";
 import styled from "@emotion/styled";
+import React, { Component, memo, ReactNode, useMemo, useState } from "react";
+import { ButtonAction } from "@components/buttons/Button/variations/Button.action";
 import { colors } from "@utils/constants/colors";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   FilePlusIcon,
 } from "@utils/constants/icons";
-import { DropdownContext } from "contexts/DropdownContext";
-import { memo, useContext, useState } from "react";
 import { Small } from "../Typography/Typography";
 
 const TableMobileCard = styled.li<{ expanded?: boolean }>`
@@ -54,21 +52,20 @@ const TableMobileCardData = styled(TableMobileCardHeader)`
   gap: 2px;
 `;
 
-export const TableListCardMobile: React.FC<{
+export const TableListCardMobileView: React.FC<{
   header: { field: string; value: string };
-  content: { field: string; value: string }[];
+  content: { field: string; value: string; component?: ReactNode }[];
+  expanded: boolean;
+  onClick: () => void;
   onActionClick?: () => void;
-}> = ({ header, content, onActionClick }) => {
-  const [expanded, setExpanded] = useState(false);
-  const [shouldExpand, setShouldExpand] = useState(true);
-
+}> = ({ header, content, expanded, onClick, onActionClick }) => {
   const handleSerializeContent = () => {
-    return content.map(({ field, value }, index) => (
+    return content.map(({ field, value, component }, index) => (
       <TableMobileCardData key={index}>
         <Small>
           <strong>{field}</strong>
         </Small>
-        <Small>{value}</Small>
+        {component ? component : <Small>{value}</Small>}
       </TableMobileCardData>
     ));
   };
@@ -79,7 +76,7 @@ export const TableListCardMobile: React.FC<{
       aria-pressed={expanded}
       tabIndex={0}
       expanded={expanded}
-      onClick={() => shouldExpand && setExpanded(!expanded)}
+      onClick={onClick}
     >
       <TableMobileReturnWrapper>
         {expanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
@@ -95,18 +92,21 @@ export const TableListCardMobile: React.FC<{
           <TableMobileCardContent aria-label="Abrir ações">
             {handleSerializeContent()}
           </TableMobileCardContent>
-          <ButtonActionMobile
+          <ButtonAction
             onMouseDown={() => {
-              setShouldExpand(false);
               onActionClick && onActionClick();
             }}
-            onBlur={() => setShouldExpand(true)}
             icon={<FilePlusIcon />}
           >
             Ações
-          </ButtonActionMobile>
+          </ButtonAction>
         </>
       )}
     </TableMobileCard>
   );
 };
+
+export const TableListCardMobile = memo(
+  TableListCardMobileView,
+  (prev, next) => prev.expanded === next.expanded
+);

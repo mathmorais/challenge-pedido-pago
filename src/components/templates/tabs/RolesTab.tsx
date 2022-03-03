@@ -1,25 +1,24 @@
-import { ChangeEvent, useContext, useEffect } from "react";
-
+import { ChangeEvent, useCallback, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-
 import styled from "@emotion/styled";
-import { Paragraphy } from "../../layouts/Typography/Typography";
-import { OrganizationContext } from "../../../contexts/OrganizationContext";
-import { ITableColumn } from "../../../interfaces/ITableColumn";
+
+import { Paragraphy } from "@components/layouts/Typography/Typography";
+import { OrganizationContext } from "@contexts/OrganizationContext";
+import { ITableColumn } from "@interfaces/ITableColumn";
 import {
   DuplicateIcon,
   EditIcon,
   EyeIcon,
   TrashIcon,
-} from "../../../utils/constants/icons";
-import { IDropdownItem } from "../../../interfaces/IDropdownItem";
-import { Input } from "../../inputs/Input/Input";
-import { TableList } from "../../layouts/TableList/TableList";
-import { Dropdown } from "../../inputs/Dropdown/Dropdown";
+} from "@utils/constants/icons";
+import { IDropdownItem } from "@interfaces/IDropdownItem";
+import { Input } from "@components/inputs/Input/Input";
+import { TableList } from "@components/layouts/TableList/TableList";
+import { Dropdown } from "@components/inputs/Dropdown/Dropdown";
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
 import { Paginator } from "@components/buttons/Paginator/Paginator";
 import { TableCell } from "@components/layouts/TableList/TableList.desktop";
-import { DropdownContextProvider } from "contexts/DropdownContext";
+import { debounce } from "@utils/helpers/debounce";
 import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 
 const RolesContainer = styled.div`
@@ -42,16 +41,18 @@ export const RolesTab: React.FC = () => {
     {
       field: "name",
       headerName: "Cargo",
-      width: 196,
+      width: "100%",
     },
     {
       field: "departament",
       headerName: "Departamento",
-      width: 224,
+      width: "100%",
     },
     {
       field: "agents_quantity",
       headerName: "Colaboradores",
+      width: "100%",
+      spacing: 200,
     },
   ];
 
@@ -84,38 +85,36 @@ export const RolesTab: React.FC = () => {
     handleFilterRoles("");
   }, []);
 
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    handleFilterRoles(event.currentTarget.value);
-  };
+  const handleOnChange = useCallback(debounce(handleFilterRoles), []);
 
   return (
     <RolesContainer>
       <RoleSearchSection>
         <Input
-          onChange={handleSearch}
+          onChange={(event) => handleOnChange(event.currentTarget.value)}
           label="Pesquisar por"
           placeholder="Pesquise por cargos"
         />
       </RoleSearchSection>
       <Paragraphy>Listagem de cargos</Paragraphy>
       <PaginatorContextProvider>
-        <DropdownContextProvider>
-          <TableList
-            additionalCell={
-              <TableCell alignRight>
-                <Dropdown items={items} />
-              </TableCell>
-            }
-            rows={roles}
-            columns={columns}
-          />
-          <Paginator
-            labelCount={false}
-            limitSelector={false}
-            totalItems={roles.length}
-          />
-          <DropdownMobile />
-        </DropdownContextProvider>
+        <TableList
+          withDropdown={{
+            items,
+          }}
+          additionalCell={
+            <TableCell alignRight>
+              <Dropdown />
+            </TableCell>
+          }
+          rows={roles}
+          columns={columns}
+        />
+        <Paginator
+          labelCount={false}
+          limitSelector={false}
+          totalItems={roles.length}
+        />
       </PaginatorContextProvider>
     </RolesContainer>
   );

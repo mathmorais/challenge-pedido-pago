@@ -6,6 +6,7 @@ import { TableListDesktop } from "./TableList.desktop";
 import { TableListMobile } from "./TableList.mobile";
 
 export type TableListProps = {
+  cellSpacing?: number;
   columns: ITableColumn[];
   rows: any[];
   rowIdField?: string;
@@ -15,15 +16,17 @@ export type TableListProps = {
     index: number
   ) => JSX.Element | undefined;
   additionalCell?: JSX.Element | JSX.Element[];
-  dropdown?: {
+  withDropdown?: {
     items: IDropdownItem[];
   };
 };
 
-export const TableList: React.FC<TableListProps> = (props) => {
+export const TableList: React.FC<
+  { mobileVersion?: boolean } & TableListProps
+> = ({ mobileVersion = true, ...props }) => {
   const { isMobile } = useContext(PlataformContext);
 
-  if (isMobile) {
+  if (isMobile && mobileVersion) {
     return <TableListMobile {...props} />;
   } else {
     return <TableListDesktop {...props} />;

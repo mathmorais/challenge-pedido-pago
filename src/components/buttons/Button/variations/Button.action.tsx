@@ -4,7 +4,7 @@ import { Paragraphy } from "@components/layouts/Typography/Typography";
 import { colors } from "@utils/constants/colors";
 import { Button, ButtonAttributes } from "../Button";
 
-const ButtonActionMobileContainer = styled(Button)`
+const ButtonActionContainer = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@ type ButtonActionMobileProps = {
   icon: ReactNode;
 } & ButtonAttributes;
 
-export const ButtonActionMobile: React.FC<ButtonActionMobileProps> = ({
+export const ButtonAction: React.FC<ButtonActionMobileProps> = ({
   icon,
   children,
   ...props
@@ -27,9 +27,9 @@ export const ButtonActionMobile: React.FC<ButtonActionMobileProps> = ({
   const Icon = icon;
 
   return (
-    <ButtonActionMobileContainer {...props}>
+    <ButtonActionContainer {...props}>
       {Icon}
       <Paragraphy>{children}</Paragraphy>
-    </ButtonActionMobileContainer>
+    </ButtonActionContainer>
   );
 };

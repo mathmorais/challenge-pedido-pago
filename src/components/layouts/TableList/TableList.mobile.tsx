@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
-import {
+import React, {
   memo,
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -13,6 +12,7 @@ import { PaginatorContext } from "contexts/PaginatorContext";
 import { TableListCardMobile } from "../TableListCard/TableListCard.mobile";
 import { DropdownContext } from "contexts/DropdownContext";
 import { TableListProps } from "./TableList";
+import { Status } from "../Status/Status";
 
 const TableListMobileContainer = styled.ul`
   display: flex;
@@ -22,19 +22,27 @@ const TableListMobileContainer = styled.ul`
 const TableListMobileView: React.FC<TableListProps> = ({
   columns = [],
   rows = [],
-  dropdown,
+  withDropdown,
   ...props
 }) => {
   const { limit = rows.length } = useContext(PaginatorContext);
   const { setItems } = useContext(DropdownContext);
+  const [selectedCard, setSelectedCard] = useState<number>();
 
-  const handleSerializeRows = () => {
-    return rows.map((row, index) => {
+  const handleSerializeRows = (rowSet: typeof rows) => {
+    return rowSet.map((row, index) => {
       if (index <= limit) {
-        const data: { field: string; value: string }[] = [];
+        const data: { field: string; value: string; component?: ReactNode }[] =
+          [];
 
         columns.forEach((column) => {
-          data.push({ field: column.headerName, value: row[column.field] });
+          const rowValue = row[column.field];
+          let component = undefined;
+
+          if (column.field === "status")
+            component = <Status status={rowValue} />;
+
+          data.push({ field: column.headerName, value: rowValue, component });
         });
 
         return (
@@ -42,7 +50,9 @@ const TableListMobileView: React.FC<TableListProps> = ({
             key={index}
             header={data[0]}
             content={data.slice(1)}
-            onActionClick={() => setItems(dropdown?.items)}
+            expanded={selectedCard === index}
+            onClick={() => setSelectedCard(index)}
+            onActionClick={() => setItems(withDropdown?.items)}
           />
         );
       }
@@ -50,8 +60,10 @@ const TableListMobileView: React.FC<TableListProps> = ({
   };
 
   return (
-    <TableListMobileContainer>{handleSerializeRows()}</TableListMobileContainer>
+    <TableListMobileContainer>
+      {handleSerializeRows(rows)}
+    </TableListMobileContainer>
   );
 };
 
-export const TableListMobile = memo(TableListMobileView);
+export const TableListMobile = TableListMobileView;

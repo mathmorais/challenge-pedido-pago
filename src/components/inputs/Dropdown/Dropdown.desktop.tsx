@@ -3,11 +3,10 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import { colors } from "@utils/constants/colors";
 import { Span } from "@components/layouts/Typography/Typography";
-import { IDropdownItem } from "@interfaces/IDropdownItem";
 import { shadows } from "@utils/constants/shadows";
-import { MoreIcon } from "@utils/constants/icons";
 import { Button } from "@components/buttons/Button/Button";
 import { DropdownProps } from "./Dropdown";
+import { MoreIcon } from "@utils/constants/icons";
 
 const DropdownWrapper = styled.div`
   position: relative;
@@ -15,9 +14,11 @@ const DropdownWrapper = styled.div`
 
 const DropdownContent = styled.div`
   position: absolute;
-  right: 0;
+  right: 0px;
   top: 30px;
+
   width: 340px;
+  transform: translate(150, 50, 0);
   padding: 8px;
   border-radius: 8px;
   box-shadow: ${shadows.level2};
@@ -69,7 +70,7 @@ export const DropdownDesktop: React.FC<Omit<DropdownProps, "mobile">> = ({
   const [active, setActive] = useState<boolean>(false);
 
   const handleSerializeItems = () => {
-    return items.map((item, index) => (
+    return items?.map((item, index) => (
       <DropdownItem
         enabled={item.enabled ?? false}
         key={index}
@@ -83,7 +84,10 @@ export const DropdownDesktop: React.FC<Omit<DropdownProps, "mobile">> = ({
 
   return (
     <DropdownWrapper>
-      <Button onClick={() => setActive(!active)}>
+      <Button
+        onBlur={() => setActive(false)}
+        onClick={() => setActive(!active)}
+      >
         <MoreIcon />
       </Button>
       {active && <DropdownContent>{handleSerializeItems()}</DropdownContent>}

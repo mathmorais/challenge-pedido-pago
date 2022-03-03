@@ -17,6 +17,7 @@ import RefreshIcon from "@public/svgs/refresh.svg";
 import RepeatIcon from "@public/svgs/repeat.svg";
 import TrashIcon from "@public/svgs/trash.svg";
 import UserIcon from "@public/svgs/user.svg";
+import CloseIcon from "@public/svgs/close.svg";
 
 export {
   ArrowLeftIcon,
@@ -38,4 +39,5 @@ export {
   RepeatIcon,
   TrashIcon,
   UserIcon,
+  CloseIcon,
 };

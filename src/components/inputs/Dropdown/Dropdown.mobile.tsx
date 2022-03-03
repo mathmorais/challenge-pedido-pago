@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { css } from "@emotion/react";
 import { colors } from "@utils/constants/colors";
-import { Span } from "@components/layouts/Typography/Typography";
+import { Span, Subtitle } from "@components/layouts/Typography/Typography";
 import { shadows } from "@utils/constants/shadows";
 import { Button } from "@components/buttons/Button/Button";
-import { DropdownProps } from "./Dropdown";
 import { DropdownContext } from "contexts/DropdownContext";
+import { CloseIcon } from "@utils/constants/icons";
 
 const DropdownMobileWrapper = styled.div`
   width: 100%;
@@ -18,16 +18,23 @@ const DropdownMobileWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
+`;
 
-  &::before {
-    position: absolute;
+const DropdownBackground = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: ${colors.neutral.black};
+  filter: opacity(0.1);
 
-    content: "";
-    width: 100%;
-    height: 100%;
-    background: ${colors.neutral.black};
-    filter: opacity(0.1);
-  }
+  z-index: 1;
+`;
+
+const DropdownHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 17px;
+  padding-bottom: 10px;
 `;
 
 const DropdownContent = styled.div`
@@ -37,6 +44,10 @@ const DropdownContent = styled.div`
   box-shadow: ${shadows.level2};
   background: ${colors.neutral.white};
   z-index: 2;
+
+  ${Subtitle} {
+    font-weight: 600;
+  }
 `;
 
 const DisabledDropdownItem = css`
@@ -78,7 +89,15 @@ const DropdownItem = styled(Button)<{ enabled: boolean }>`
 `;
 
 export const DropdownMobile: React.FC = () => {
-  const { items, setItems } = useContext(DropdownContext);
+  const { dropdownInfo, setDropdownInfo, items, setItems } =
+    useContext(DropdownContext);
+
+  useEffect(() => {
+    return () => {
+      setItems(undefined);
+      setDropdownInfo(undefined);
+    };
+  }, []);
 
   const handleSerializeItems = () => {
     return items?.map((item, index) => (
@@ -93,10 +112,27 @@ export const DropdownMobile: React.FC = () => {
     ));
   };
 
+  const handleHideDropdown = () => {
+    setItems(undefined);
+    setDropdownInfo(undefined);
+  };
+
   if (items && items.length > 0) {
     return (
-      <DropdownMobileWrapper onClick={() => setItems(undefined)}>
-        <DropdownContent>{handleSerializeItems()}</DropdownContent>
+      <DropdownMobileWrapper>
+        <DropdownBackground onClick={handleHideDropdown} />
+        <DropdownContent>
+          {dropdownInfo?.label && (
+            <DropdownHeader>
+              <Subtitle>{dropdownInfo?.label}</Subtitle>
+              <Button onClick={handleHideDropdown}>
+                <CloseIcon />
+              </Button>
+            </DropdownHeader>
+          )}
+
+          {handleSerializeItems()}
+        </DropdownContent>
       </DropdownMobileWrapper>
     );
   } else {

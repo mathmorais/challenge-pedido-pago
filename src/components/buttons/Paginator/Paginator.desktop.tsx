@@ -41,10 +41,15 @@ const PaginatorLimitSelectorWrapper = styled.div`
 `;
 
 const PaginatorButtonDisabled = css`
-  border: 1.4px solid ${colors.neutral.neutral2};
+  border-color: ${colors.neutral.neutral2};
   svg path {
     fill: ${colors.neutral.neutral2};
   }
+`;
+
+const PaginatorLabel = styled.div`
+  width: min-content;
+  white-space: nowrap;
 `;
 
 const PaginatorButton = styled(Button)<{
@@ -156,15 +161,20 @@ export const PaginatorDesktop: React.FC<PaginatorProps> = ({
       </PaginatorInfo>
       <PaginatorActions>
         <PaginatorButton
+          disabled={currentPage <= 1}
           onClick={() => handlePaginatorButton("decrement")}
           direction="left"
         >
           <ChevronLeftIcon />
         </PaginatorButton>
-        <Paragraphy>
-          {currentPage} de {totalPages}
-        </Paragraphy>
+        <PaginatorLabel>
+          <Paragraphy>
+            {currentPage} de {totalPages}
+          </Paragraphy>
+        </PaginatorLabel>
+
         <PaginatorButton
+          disabled={currentPage >= totalPages}
           onClick={() => handlePaginatorButton("increment")}
           direction="right"
         >

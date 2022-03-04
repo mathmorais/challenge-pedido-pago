@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { colors } from "@utils/constants/colors";
 import { CheckIcon } from "@utils/constants/icons";
+import { fireEvent } from "@testing-library/react";
 
 type CheckboxStyle = {
   checked: boolean;
@@ -30,40 +31,36 @@ const CheckboxContainer = styled.div<CheckboxStyle>`
   ${(props) => props.checked && CheckedCheckBox};
 `;
 
-type CheckboxValues = string[];
+type CheckboxReference = Array<string | number>;
 
-type CheckboxFields = string | number | null;
+type CheckboxField = string | number;
+
+export type CheckboxValue = { field: CheckboxField; checked: boolean };
 
 type CheckboxProps = {
-  reference: CheckboxValues;
-  field: CheckboxFields;
+  field: CheckboxField;
+  checked?: boolean;
+  onCheck?: (checkbox: CheckboxValue) => void;
 };
 
-const CheckboxView: React.FC<CheckboxProps> = ({ reference, field = null }) => {
-  const [referenceCopy, setReferenceCopy] = useState<string[]>(reference);
+const CheckboxView: React.FC<CheckboxProps> = ({
+  field,
+  onCheck,
+  ...props
+}) => {
+  const [checked, setChecked] = useState<boolean>(props.checked ?? false);
 
-  const handleCheckValue = (): boolean => {
-    if (reference instanceof Array) {
-      return referenceCopy.some((insetValue) => insetValue === field);
-    }
-
-    return false;
-  };
+  useEffect(() => {
+    onCheck && onCheck({ field, checked });
+  }, [checked]);
 
   return (
     <CheckboxContainer
-      onClick={() => {
-        if (referenceCopy.includes(`${field}`)) {
-          const newArray = reference.filter((item) => item !== field);
-          setReferenceCopy(newArray);
-        } else {
-          setReferenceCopy((oldReferenceCopy) => [
-            ...oldReferenceCopy,
-            String(field),
-          ]);
-        }
-      }}
-      checked={handleCheckValue()}
+      role="checkbox"
+      data-testid="checkbox"
+      aria-checked={checked}
+      onClick={() => setChecked(!checked)}
+      checked={checked}
     >
       <CheckIcon />
     </CheckboxContainer>

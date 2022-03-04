@@ -1,9 +1,7 @@
-import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 import styled from "@emotion/styled";
-import { DropdownContextProvider } from "contexts/DropdownContext";
-import { PlataformContextProvider } from "contexts/PlataformContext";
 import Head from "next/head";
-import { colors } from "../../../utils/constants/colors";
+import { PlataformContextProvider } from "contexts/PlataformContext";
+import { colors } from "@utils/constants/colors";
 import { Header } from "../Header/Header";
 import { Sidebar } from "../Sidebar/Sidebar";
 

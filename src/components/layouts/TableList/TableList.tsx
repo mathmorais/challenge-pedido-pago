@@ -2,22 +2,26 @@ import { IDropdownItem } from "@interfaces/IDropdownItem";
 import { ITableColumn } from "@interfaces/ITableColumn";
 import { PlataformContext } from "contexts/PlataformContext";
 import { useContext } from "react";
-import { TableListDesktop } from "./TableList.desktop";
+import { TableCellStyles, TableListDesktop } from "./TableList.desktop";
 import { TableListMobile } from "./TableList.mobile";
 
+type CustomCell = {
+  options?: TableCellStyles;
+  component: JSX.Element;
+};
+
 export type TableListProps = {
-  cellSpacing?: number;
   columns: ITableColumn[];
   rows: any[];
   rowIdField?: string;
   cellSwap?: (
     column: ITableColumn,
-    row: any[],
+    row: any,
     index: number
   ) => JSX.Element | undefined;
-  additionalCell?: JSX.Element | JSX.Element[];
-  withDropdown?: {
-    items: IDropdownItem[];
+  additionalCells?: CustomCell;
+  mobile?: {
+    drodpdownItems: IDropdownItem[];
   };
 };
 

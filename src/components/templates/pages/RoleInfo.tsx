@@ -1,6 +1,7 @@
 import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import styled from "@emotion/styled";
-import { IRole } from "../../../interfaces/IRole";
+import { RolePermissions } from "enums/GroupPermissions";
+import { IRole, IRoleGroupRule } from "../../../interfaces/IRole";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
 import { Checkbox } from "../../buttons/Checkbox/Checkbox";
 import { Input } from "../../inputs/Input/Input";
@@ -34,41 +35,38 @@ const RoleInfoSection = styled.section`
   }
 `;
 
-enum RoleColumnFields {
-  Role = "role",
-  Read = "read",
-  Write = "write",
-  Delete = "delete",
-}
-
 export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
   const columns: ITableColumn[] = [
     {
-      field: RoleColumnFields.Role,
+      field: "role",
       headerName: "Cargo",
       width: "100%",
     },
     {
-      field: RoleColumnFields.Read,
+      field: RolePermissions.Read,
       headerName: "Ler",
+      width: 96,
     },
     {
-      field: RoleColumnFields.Write,
+      field: RolePermissions.Write,
       headerName: "Editar",
+      width: 96,
     },
     {
-      field: RoleColumnFields.Delete,
+      field: RolePermissions.Delete,
       headerName: "Excluir",
+      width: 96,
     },
   ];
 
-  const handleCellSwitching = (
-    column: ITableColumn,
-    row: any,
-    index: number
-  ) => {
-    if (column.field !== RoleColumnFields.Role) {
-      return <Checkbox field={column.field} reference={row.permissions} />;
+  const handleCellSwitching = (column: ITableColumn, row: IRoleGroupRule) => {
+    if (column.field !== "role") {
+      return (
+        <Checkbox
+          field={column.field}
+          checked={row.permissions.includes(column.field as RolePermissions)}
+        />
+      );
     }
   };
 
@@ -84,7 +82,6 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
       <RoleInfoSection>
         <Paragraphy>Listagem de permissões</Paragraphy>
         <TableList
-          cellSpacing={50.5}
           mobileVersion={false}
           cellSwap={handleCellSwitching}
           columns={columns}

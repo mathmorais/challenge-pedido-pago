@@ -17,6 +17,10 @@ import { Status } from "@components/layouts/Status/Status";
 import { debounce } from "@utils/helpers/debounce";
 import { AgentStatus } from "@interfaces/IAgent";
 import { Dropdown } from "@components/inputs/Dropdown/Dropdown";
+import { DropdownDesktop } from "@components/inputs/Dropdown/Dropdown.desktop";
+import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
+import { RequestStates } from "enums/RequestStates";
+import { Loading } from "@components/layouts/Loading/Loading";
 
 const ColaboratorsTabContainer = styled.div`
   & > ${Paragraphy} {
@@ -30,7 +34,7 @@ const ColaboratorsSearchSection = styled.section`
 `;
 
 export const ColaboratorsTab: React.FC = () => {
-  const { agents, handleFilterAgents } = useContext(OrganizationContext);
+  const { state, agents, handleFilterAgents } = useContext(OrganizationContext);
   const router = useRouter();
 
   const columns: ITableColumn[] = [
@@ -88,11 +92,9 @@ export const ColaboratorsTab: React.FC = () => {
         </>
       ),
       status: (
-        <TableCell key={index} width={column.width}>
-          <Status status={row[column.field]}>
-            {row[column.field] === AgentStatus.Active ? "Ativo" : "Inativo"}
-          </Status>
-        </TableCell>
+        <Status status={row[column.field]}>
+          {row[column.field] === AgentStatus.Active ? "Ativo" : "Inativo"}
+        </Status>
       ),
     };
 
@@ -115,20 +117,29 @@ export const ColaboratorsTab: React.FC = () => {
         />
       </ColaboratorsSearchSection>
       <Paragraphy>Listagem de colaboradores</Paragraphy>
-      <PaginatorContextProvider>
-        <TableList
-          cellSpacing={30.8}
-          rows={agents}
-          columns={columns}
-          withDropdown={{
-            items: items,
-          }}
-          cellSwap={handleCellSwitching}
-          additionalCell={<Dropdown items={items} />}
-        />
-
-        <Paginator totalItems={agents.length} labelCount limitSelector />
-      </PaginatorContextProvider>
+      {state === RequestStates.completed || state === RequestStates.empty ? (
+        <PaginatorContextProvider>
+          <TableList
+            rowIdField={"agent_id"}
+            rows={agents}
+            columns={columns}
+            cellSwap={handleCellSwitching}
+            mobile={{
+              drodpdownItems: items,
+            }}
+            additionalCells={{
+              component: <DropdownDesktop items={items} />,
+              options: {
+                align: "left",
+              },
+            }}
+          />
+          <DropdownMobile />
+          <Paginator totalItems={agents.length} labelCount limitSelector />
+        </PaginatorContextProvider>
+      ) : (
+        <Loading />
+      )}
     </ColaboratorsTabContainer>
   );
 };

@@ -16,7 +16,7 @@ export const PlataformContextProvider: React.FC = ({ children }) => {
     setIsMobile(currentWindow.innerWidth <= maximumWidth);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     handleCheckPlataform();
 
     window.onresize = debounce((event: UIEvent) => {

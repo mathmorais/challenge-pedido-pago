@@ -10,6 +10,11 @@ const ButtonContainer = styled.button`
   color: ${colors.neutral.black};
   border: none;
 
+  &:active {
+    filter: opacity(0.8);
+    background: ${colors.tertiary.default};
+  }
+
   &:disabled {
     cursor: not-allowed;
   }

@@ -1,4 +1,10 @@
-import { ChangeEvent, useCallback, useContext, useEffect } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 
@@ -14,12 +20,13 @@ import {
 import { IDropdownItem } from "@interfaces/IDropdownItem";
 import { Input } from "@components/inputs/Input/Input";
 import { TableList } from "@components/layouts/TableList/TableList";
-import { Dropdown } from "@components/inputs/Dropdown/Dropdown";
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
 import { Paginator } from "@components/buttons/Paginator/Paginator";
-import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import { debounce } from "@utils/helpers/debounce";
 import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
+import { DropdownDesktop } from "@components/inputs/Dropdown/Dropdown.desktop";
+import { RequestStates } from "enums/RequestStates";
+import { Loading } from "@components/layouts/Loading/Loading";
 
 const RolesContainer = styled.div`
   & > ${Paragraphy} {
@@ -34,7 +41,7 @@ const RoleSearchSection = styled.section`
 
 export const RolesTab: React.FC = () => {
   const router = useRouter();
-  const { roles, handleGetRoles, handleFilterRoles } =
+  const { state, roles, handleGetRoles, handleFilterRoles } =
     useContext(OrganizationContext);
 
   const columns: ITableColumn[] = [
@@ -80,7 +87,7 @@ export const RolesTab: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handleGetRoles();
     handleFilterRoles("");
   }, []);
@@ -91,31 +98,37 @@ export const RolesTab: React.FC = () => {
     <RolesContainer>
       <RoleSearchSection>
         <Input
-          onChange={(event) => handleOnChange(event.currentTarget.value)}
+          onChange={(event) => handleOnChange(event.target.value)}
           label="Pesquisar por"
           placeholder="Pesquise por cargos"
         />
       </RoleSearchSection>
       <Paragraphy>Listagem de cargos</Paragraphy>
-      <PaginatorContextProvider>
-        <TableList
-          withDropdown={{
-            items,
-          }}
-          additionalCell={
-            <TableCell alignRight>
-              <Dropdown />
-            </TableCell>
-          }
-          rows={roles}
-          columns={columns}
-        />
-        <Paginator
-          labelCount={false}
-          limitSelector={false}
-          totalItems={roles.length}
-        />
-      </PaginatorContextProvider>
+      {state === RequestStates.loading ? (
+        <Loading />
+      ) : (
+        <PaginatorContextProvider>
+          <TableList
+            rows={roles}
+            columns={columns}
+            mobile={{
+              drodpdownItems: items,
+            }}
+            additionalCells={{
+              component: <DropdownDesktop items={items} />,
+              options: {
+                align: "left",
+              },
+            }}
+          />
+          <Paginator
+            labelCount={false}
+            limitSelector={false}
+            totalItems={roles.length}
+          />
+          <DropdownMobile />
+        </PaginatorContextProvider>
+      )}
     </RolesContainer>
   );
 };

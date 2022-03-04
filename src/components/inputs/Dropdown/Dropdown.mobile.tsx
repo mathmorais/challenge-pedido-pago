@@ -9,8 +9,8 @@ import { DropdownContext } from "contexts/DropdownContext";
 import { CloseIcon } from "@utils/constants/icons";
 
 const DropdownMobileWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -18,6 +18,7 @@ const DropdownMobileWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
+  overflow: scroll;
 `;
 
 const DropdownBackground = styled.div`
@@ -44,6 +45,7 @@ const DropdownContent = styled.div`
   box-shadow: ${shadows.level2};
   background: ${colors.neutral.white};
   z-index: 2;
+  overflow: overlay;
 
   ${Subtitle} {
     font-weight: 600;
@@ -67,10 +69,6 @@ const DropdownItem = styled(Button)<{ enabled: boolean }>`
   display: inline-flex;
   gap: 16px;
   padding: 17px;
-
-  &:hover {
-    background: ${colors.neutral.neutral1};
-  }
 
   svg {
     z-index: 0;

@@ -163,7 +163,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
       <TableHead>
         <tr>{handleSerializeHeaders()}</tr>
       </TableHead>
-      <TableBody {...props}>
+      <TableBody scrollable={props.scrollable ?? true}>
         {rows.length > 0 ? (
           handleSerializeRows()
         ) : (

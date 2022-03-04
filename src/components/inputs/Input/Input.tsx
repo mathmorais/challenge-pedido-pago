@@ -76,7 +76,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <InputWrapper>
         {icon && icon}
-        <InputField readOnly={readOnly} ref={ref} {...props} />
+        <InputField
+          aria-disabled={readOnly}
+          readOnly={readOnly}
+          ref={ref}
+          {...props}
+        />
         <SelectFieldset>
           <legend>
             <Span>{label}</Span>

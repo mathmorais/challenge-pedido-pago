@@ -1,69 +1,68 @@
 import styled from "@emotion/styled";
-import React, {
-  memo,
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactNode, useContext, useState } from "react";
 
 import { PaginatorContext } from "contexts/PaginatorContext";
 import { TableListCardMobile } from "../TableListCard/TableListCard.mobile";
 import { DropdownContext } from "contexts/DropdownContext";
-import { TableListProps } from "./TableList";
 import { Status } from "../Status/Status";
+import { Small } from "../Typography/Typography";
+import { TableListProps } from "./TableList";
 
 const TableListMobileContainer = styled.ul`
   display: flex;
   flex-direction: column;
 `;
 
-const TableListMobileView: React.FC<TableListProps> = ({
+export const TableListMobile: React.FC<TableListProps> = ({
   columns = [],
   rows = [],
-  withDropdown,
+  mobile,
   ...props
 }) => {
   const { limit = rows.length } = useContext(PaginatorContext);
   const { setItems } = useContext(DropdownContext);
   const [selectedCard, setSelectedCard] = useState<number>();
 
-  const handleSerializeRows = (rowSet: typeof rows) => {
-    return rowSet.map((row, index) => {
-      if (index <= limit) {
-        const data: { field: string; value: string; component?: ReactNode }[] =
-          [];
+  const handleSerializeRows = () => {
+    return rows.map((row, index) => {
+      if (index >= limit) return;
 
-        columns.forEach((column) => {
-          const rowValue = row[column.field];
-          let component = undefined;
+      const data: { field: string; value: string; component?: ReactNode }[] =
+        [];
 
-          if (column.field === "status")
-            component = <Status status={rowValue} />;
+      columns.forEach((column) => {
+        const rowValue = row[column.field];
+        let component = undefined;
 
-          data.push({ field: column.headerName, value: rowValue, component });
-        });
+        if (column.field === "status") component = <Status status={rowValue} />;
 
-        return (
-          <TableListCardMobile
-            key={index}
-            header={data[0]}
-            content={data.slice(1)}
-            expanded={selectedCard === index}
-            onClick={() => setSelectedCard(index)}
-            onActionClick={() => setItems(withDropdown?.items)}
-          />
-        );
-      }
+        data.push({ field: column.headerName, value: rowValue, component });
+      });
+
+      return (
+        <TableListCardMobile
+          key={row[props.rowIdField ?? "id"] ?? index}
+          header={data[0]}
+          content={data.slice(1)}
+          expanded={selectedCard === index}
+          onClick={() =>
+            selectedCard === index
+              ? setSelectedCard(undefined)
+              : setSelectedCard(index)
+          }
+          onActionClick={() => setItems(mobile?.drodpdownItems)}
+        />
+      );
     });
   };
 
   return (
     <TableListMobileContainer>
-      {handleSerializeRows(rows)}
+      {rows.length > 0 ? (
+        handleSerializeRows()
+      ) : (
+        <Small>Nenhum dado encontrado</Small>
+      )}
     </TableListMobileContainer>
   );
 };
-
-export const TableListMobile = TableListMobileView;

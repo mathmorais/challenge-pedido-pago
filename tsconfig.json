@@ -11,19 +11,19 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "paths": {
+      "*.svg": ["/__mocks__/svgr.tsx"],
       "@public/*": ["../public/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
       "@interfaces/*": ["interfaces/*"],
       "@utils/*": ["utils/*"]
-    }
+    },
+    "isolatedModules": true
   },
-
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "./jest-setup.ts"],
   "exclude": ["node_modules"]
 }

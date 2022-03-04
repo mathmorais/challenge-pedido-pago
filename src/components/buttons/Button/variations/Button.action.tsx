@@ -13,6 +13,13 @@ const ButtonActionContainer = styled(Button)`
   border-radius: 8px;
   border: 2px solid ${colors.primary.disabled};
   gap: 8px;
+
+  &:active {
+    filter: opacity(0.7);
+    background: ${colors.neutral.neutral1};
+  }
+
+  transition: background 0.1s ease-in;
 `;
 
 type ButtonActionMobileProps = {

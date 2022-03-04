@@ -6,16 +6,17 @@ import { Small } from "../Typography/Typography";
 import { PaginatorContext } from "contexts/PaginatorContext";
 import { TableListProps } from "./TableList";
 import { AgentStatus } from "@interfaces/IAgent";
+import { typography } from "@utils/constants/typography";
 
 type TableRowStyles = {
   inactive?: boolean;
   cellSpacing?: number;
 };
 
-type TableCellStyles = {
+export type TableCellStyles = {
   width?: string | number;
   bold?: boolean;
-  alignRight?: boolean;
+  align?: "left";
 };
 
 const Table = styled.table`
@@ -50,7 +51,8 @@ type TableListColumnsStyle = {
 };
 
 const TableHeader = styled.th<TableListColumnsStyle>`
-  padding-right: ${(props) => props.cellSpacing}px;
+  font-size: ${typography.small.size};
+  padding-left: ${(props) => props.cellSpacing}px;
   width: ${(props) => props.width};
   ${Small} {
     font-weight: 600;
@@ -70,9 +72,9 @@ const TableRow = styled.tr<TableRowStyles>`
 export const TableCell = styled.td<TableCellStyles>`
   display: inline-flex;
   align-items: center;
-  min-width: ${(props) => props.width}px;
-  margin-left: ${(props) => props.alignRight && "auto"};
   gap: 8px;
+  width: ${(props) => props.width}px;
+  margin-left: ${(props) => (props.align === "left" ? "auto" : "none")};
 
   ${Small} {
     font-weight: ${(props) => props.bold && "600"};
@@ -89,7 +91,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
   const handleSerializeHeaders = () => {
     return columns.map((column, index) => (
       <TableHeader width={column.width} key={index} {...props}>
-        <Small>{column.headerName}</Small>
+        {column.headerName}
       </TableHeader>
     ));
   };
@@ -130,8 +132,12 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
             key={props.rowIdField ? row[props.rowIdField] : index}
           >
             {[...cells]}
-            <TableCell key={index} {...props}>
-              {props.additionalCell}
+            <TableCell
+              {...props.additionalCells?.options}
+              key={index}
+              {...props}
+            >
+              {props.additionalCells?.component}
             </TableCell>
           </TableRow>
         );
@@ -144,7 +150,15 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
       <TableHead>
         <tr>{handleSerializeHeaders()}</tr>
       </TableHead>
-      <tbody>{handleSerializeRows()}</tbody>
+      <tbody>
+        {rows.length > 0 ? (
+          handleSerializeRows()
+        ) : (
+          <TableRow>
+            <Small as="td">Nenhum dado encontrado</Small>
+          </TableRow>
+        )}
+      </tbody>
     </Table>
   );
 };

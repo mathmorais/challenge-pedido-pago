@@ -16,6 +16,8 @@ const DropdownContent = styled.div`
   position: absolute;
   right: 0px;
   top: 30px;
+  display: flex;
+  flex-direction: column;
 
   width: 340px;
   transform: translate(150, 50, 0);

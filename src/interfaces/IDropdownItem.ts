@@ -4,5 +4,6 @@ export interface IDropdownItem {
   enabled?: boolean;
   icon?: ReactNode;
   label: string;
+
   action: () => void;
 }

@@ -1,17 +1,17 @@
 import axios from "axios";
+import { RequestStates } from "enums/RequestStates";
 import React, {
   createContext,
   createRef,
-  useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { IAgents } from "../interfaces/IAgents";
 import { IRoles } from "../interfaces/IRoles";
-import { PaginatorContext } from "./PaginatorContext";
 
 type AgentsListContextProps = {
+  state: RequestStates;
   agents: IAgents[];
   roles: IRoles[];
   handleGetAgents(): Promise<void>;
@@ -31,19 +31,26 @@ export const OrganizationContextProvider: React.FC<{
   } as { agents: IAgents[] | null; roles: IRoles[] | null });
   const [agents, setAgents] = useState<IAgents[]>(initialValue);
   const [roles, setRoles] = useState<IRoles[]>([]);
+  const [state, setState] = useState<RequestStates>(RequestStates.empty);
 
   const handleGetAgents = async () => {
     if (!dataStore.current.agents) {
+      setState(RequestStates.started);
+      setState(RequestStates.loading);
       const { data } = await axios.get<{ items: IAgents[] }>("/api/agents");
       setAgents(data.items);
+      setState(RequestStates.completed);
       dataStore.current.agents = data.items;
     }
   };
 
   const handleGetRoles = async () => {
     if (!dataStore.current.roles) {
+      setState(RequestStates.started);
+      setState(RequestStates.loading);
       const { data } = await axios.get<{ roles: IRoles[] }>("/api/roles");
       setRoles(data.roles);
+      setState(RequestStates.completed);
       dataStore.current.roles = data.roles;
     }
   };
@@ -56,8 +63,8 @@ export const OrganizationContextProvider: React.FC<{
   };
 
   const handleFilterRoles = (filter: string) => {
-    const filtredArray = dataStore.current.roles?.filter((agent) =>
-      agent.name.toLowerCase().includes(filter.toLocaleLowerCase())
+    const filtredArray = dataStore.current.roles?.filter((role) =>
+      role.name.toLowerCase().includes(filter.toLocaleLowerCase())
     );
     setRoles(filtredArray ?? roles);
   };
@@ -65,6 +72,7 @@ export const OrganizationContextProvider: React.FC<{
   return (
     <OrganizationContext.Provider
       value={{
+        state,
         agents,
         roles,
         handleGetAgents,

@@ -1,12 +1,11 @@
-import { GroupPermissions } from "../enum/GroupPermissions";
-
-interface IRoleGroupRules {
+import { RolePermissions } from "enums/GroupPermissions";
+export interface IRoleGroupRule {
   role: "Financeiro";
-  permissions: GroupPermissions[];
+  permissions: RolePermissions[];
 }
 
 export interface IRole {
   name: string;
   department: string;
-  grouprules: IRoleGroupRules[];
+  grouprules: IRoleGroupRule[];
 }

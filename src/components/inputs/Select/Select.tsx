@@ -120,26 +120,24 @@ export const Select: React.FC<SelectProps> = ({
   };
 
   return (
-    <div onBlur={() => setActive(false)}>
-      <SelectWrapper height={props.height}>
-        <SelectBox
-          onClick={() => {
-            setActive(!active);
-          }}
-        >
-          {active ? <ChevronDownIcon /> : <ChevronUpIcon />}
-          <Span>{value && items[value]}</Span>
-        </SelectBox>
+    <SelectWrapper onBlur={() => setActive(false)} height={props.height}>
+      <SelectBox
+        onClick={() => {
+          setActive(!active);
+        }}
+      >
+        {active ? <ChevronDownIcon /> : <ChevronUpIcon />}
+        <Span>{value && items[value]}</Span>
+      </SelectBox>
 
-        <SelectFieldset {...props}>
-          {label && (
-            <legend>
-              <Span>{label}</Span>
-            </legend>
-          )}
-        </SelectFieldset>
-        {active && <SelectMenu>{handleSerializeMenuItems()}</SelectMenu>}
-      </SelectWrapper>
-    </div>
+      <SelectFieldset {...props}>
+        {label && (
+          <legend>
+            <Span>{label}</Span>
+          </legend>
+        )}
+      </SelectFieldset>
+      {active && <SelectMenu>{handleSerializeMenuItems()}</SelectMenu>}
+    </SelectWrapper>
   );
 };

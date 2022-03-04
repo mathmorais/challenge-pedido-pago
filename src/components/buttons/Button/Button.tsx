@@ -10,14 +10,18 @@ const ButtonContainer = styled.button`
   color: ${colors.neutral.black};
   border: none;
 
+  &:active {
+    filter: opacity(0.8);
+    background: ${colors.tertiary.default};
+  }
+
   &:disabled {
     cursor: not-allowed;
   }
 `;
 
-export const Button: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  ...props
-}) => {
+export type ButtonAttributes = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const Button: React.FC<ButtonAttributes> = ({ children, ...props }) => {
   return <ButtonContainer {...props}>{children}</ButtonContainer>;
 };

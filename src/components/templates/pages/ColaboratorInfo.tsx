@@ -42,6 +42,10 @@ const SectionRow = styled.div`
   display: inline-flex;
   gap: 24px;
   margin-bottom: 24px;
+
+  @media only screen and (max-width: 960px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const ProfileSectionCard = styled.div`
@@ -56,15 +60,17 @@ const ProfileSectionCard = styled.div`
 
 const ProfileSelectionCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(318px, 1fr));
+  grid-template: 1fr 1fr / 1fr 1fr;
   gap: 24px;
-  grid-template-rows: 1fr 1fr;
+  @media only screen and (max-width: 960px) {
+    grid-template: 1fr / 1fr;
+  }
 `;
 
 export const ColaboratorInfo: React.FC<{ colaborator: IAgent }> = ({
   colaborator,
 }) => {
-  const { formatBirthDate, formatCPF, formatPhoneNumber } =
+  const { formatBirthDate, formatDocument, formatPhoneNumber } =
     new UnitsFormatter();
 
   return (
@@ -82,7 +88,10 @@ export const ColaboratorInfo: React.FC<{ colaborator: IAgent }> = ({
           <InformationCard
             icon={<IdIcon />}
             headerName="CPF"
-            content={formatCPF(colaborator.document.number)}
+            content={formatDocument(
+              colaborator.document.type,
+              colaborator.document.number
+            )}
           />
           <InformationCard
             icon={<PhoneIcon />}
@@ -97,6 +106,7 @@ export const ColaboratorInfo: React.FC<{ colaborator: IAgent }> = ({
         </SectionRow>
       </Section>
       <ProfileSectionCard>
+        <Subtitle>Dados organizacionais</Subtitle>
         <ProfileSelectionCardGrid>
           <Select
             value={colaborator.department}

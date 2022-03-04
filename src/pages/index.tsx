@@ -8,11 +8,7 @@ import { TablePageTemplate } from "../components/templates/pages/TablePageTempla
 import { RolesTab } from "../components/templates/tabs/RolesTab";
 import { Layout } from "../components/layouts/Layout/Layout";
 import { Tabs } from "../components/layouts/Tabs/Tabs";
-import { Paginator } from "@components/buttons/Paginator/Paginator";
-import {
-  PaginatorContext,
-  PaginatorContextProvider,
-} from "contexts/PaginatorContext";
+import { DropdownContextProvider } from "contexts/DropdownContext";
 
 type ColaboratorsListProps = {
   agents: IAgents[];
@@ -24,7 +20,7 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
       title: "Colaboradores",
       component: (
         <OrganizationContextProvider initialValue={agents}>
-          <ColaboratorsTab />,
+          <ColaboratorsTab />
         </OrganizationContextProvider>
       ),
     },
@@ -32,7 +28,7 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
       title: "Cargos",
       component: (
         <OrganizationContextProvider initialValue={agents}>
-          <RolesTab />,
+          <RolesTab />
         </OrganizationContextProvider>
       ),
     },
@@ -41,7 +37,9 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
   return (
     <Layout pageTitle="Organização - Pedido Pago">
       <TablePageTemplate title="Organização">
-        <Tabs tabs={tabs} />
+        <DropdownContextProvider>
+          <Tabs tabs={tabs} />
+        </DropdownContextProvider>
       </TablePageTemplate>
     </Layout>
   );

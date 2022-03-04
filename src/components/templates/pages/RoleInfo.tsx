@@ -1,9 +1,11 @@
+import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import styled from "@emotion/styled";
-import { IRole } from "../../../interfaces/IRole";
+import { RolePermissions } from "enums/GroupPermissions";
+import { IRole, IRoleGroupRule } from "../../../interfaces/IRole";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
 import { Checkbox } from "../../buttons/Checkbox/Checkbox";
 import { Input } from "../../inputs/Input/Input";
-import { TableCell, TableList } from "../../layouts/TableList/TableList";
+import { TableList } from "../../layouts/TableList/TableList";
 import { Paragraphy } from "../../layouts/Typography/Typography";
 
 const RoleInfoContainer = styled.div`
@@ -17,6 +19,10 @@ const RolefInfoRow = styled.div`
   align-items: center;
   gap: 24px;
   margin-bottom: 40px;
+
+  @media only screen and (max-width: 960px) {
+    flex-direction: column;
+  }
 `;
 
 const RoleInfoSection = styled.section`
@@ -34,35 +40,32 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     {
       field: "role",
       headerName: "Cargo",
-      width: 400,
+      width: "100%",
     },
     {
-      field: "read",
+      field: RolePermissions.Read,
       headerName: "Ler",
       width: 96,
     },
     {
-      field: "write",
+      field: RolePermissions.Write,
       headerName: "Editar",
       width: 96,
     },
     {
-      field: "delete",
+      field: RolePermissions.Delete,
       headerName: "Excluir",
       width: 96,
     },
   ];
 
-  const handleCellSwitching = (
-    column: ITableColumn,
-    row: any,
-    index: number
-  ) => {
+  const handleCellSwitching = (column: ITableColumn, row: IRoleGroupRule) => {
     if (column.field !== "role") {
       return (
-        <TableCell key={index} width={column.width}>
-          <Checkbox field={column.field} reference={row.permissions} />
-        </TableCell>
+        <Checkbox
+          field={column.field}
+          checked={row.permissions.includes(column.field as RolePermissions)}
+        />
       );
     }
   };
@@ -71,7 +74,6 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     <RoleInfoContainer>
       <RoleInfoSection>
         <Paragraphy>Dados do cargo</Paragraphy>
-
         <RolefInfoRow>
           <Input value={department} readOnly label="Departamento" />
           <Input value={name} readOnly label="Cargo" />
@@ -80,6 +82,7 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
       <RoleInfoSection>
         <Paragraphy>Listagem de permissões</Paragraphy>
         <TableList
+          mobileVersion={false}
           cellSwap={handleCellSwitching}
           columns={columns}
           rows={grouprules}

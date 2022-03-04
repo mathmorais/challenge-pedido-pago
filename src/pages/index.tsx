@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { NextPage, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import { ColaboratorsTab } from "../components/templates/tabs/ColaboratorsTab";
 import { OrganizationContextProvider } from "../contexts/OrganizationContext";
 import { IAgents } from "../interfaces/IAgents";
@@ -47,7 +47,7 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
 
 export default ColaboratorsList;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const url = `${process.env.API_URL}/agents`;
 
   const { data } = await axios.get(url);
@@ -56,5 +56,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       agents: data.items,
     },
+    revalidate: 600, // 10 minutes
   };
 };

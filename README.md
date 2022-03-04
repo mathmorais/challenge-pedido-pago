@@ -13,6 +13,7 @@
 - Nextjs
 - TypeScript
 - Emotion
+- Axios
 - Jest
 - React Testing Library
 

@@ -19,6 +19,15 @@ export type TableCellStyles = {
   align?: "left";
 };
 
+export type TableListBodyStyle = {
+  scrollable?: boolean;
+};
+
+type TableListColumnsStyle = {
+  cellSpacing?: number;
+  width?: string | number;
+};
+
 const Table = styled.table`
   display: flex;
   flex-direction: column;
@@ -45,11 +54,6 @@ const TableHead = styled.thead`
   }
 `;
 
-type TableListColumnsStyle = {
-  cellSpacing?: number;
-  width?: string | number;
-};
-
 const TableHeader = styled.th<TableListColumnsStyle>`
   font-size: ${typography.small.size};
   padding-left: ${(props) => props.cellSpacing}px;
@@ -57,6 +61,11 @@ const TableHeader = styled.th<TableListColumnsStyle>`
   ${Small} {
     font-weight: 600;
   }
+`;
+
+const TableBody = styled.tbody<TableListBodyStyle>`
+  height: ${(props) => (props.scrollable ? "340px" : "100%")};
+  overflow-y: ${(props) => (props.scrollable ? "scroll" : "hidden")};
 `;
 
 const TableRow = styled.tr<TableRowStyles>`
@@ -107,13 +116,17 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
           let cell = null;
 
           const handleSwapCells = (): JSX.Element => {
-            const swappedCellContent =
+            const swappedCell =
               props.cellSwap && props.cellSwap(column, row, index);
 
             return (
-              <TableCell width={column.width} key={index} {...props}>
-                {swappedCellContent ? (
-                  swappedCellContent
+              <TableCell
+                width={column.width}
+                key={index}
+                {...swappedCell?.options}
+              >
+                {swappedCell ? (
+                  swappedCell?.component
                 ) : (
                   <Small>{row[column.field]}</Small>
                 )}
@@ -150,7 +163,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
       <TableHead>
         <tr>{handleSerializeHeaders()}</tr>
       </TableHead>
-      <tbody>
+      <TableBody {...props}>
         {rows.length > 0 ? (
           handleSerializeRows()
         ) : (
@@ -158,7 +171,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
             <Small as="td">Nenhum dado encontrado</Small>
           </TableRow>
         )}
-      </tbody>
+      </TableBody>
     </Table>
   );
 };

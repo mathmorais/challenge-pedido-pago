@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect } from "react";
 
 import { IDropdownItem } from "@interfaces/IDropdownItem";
-import { TableList } from "../../layouts/TableList/TableList";
+import { CustomCell, TableList } from "../../layouts/TableList/TableList";
 import { ITableColumn } from "@interfaces/ITableColumn";
 import { OrganizationContext } from "../../../contexts/OrganizationContext";
 import { Paragraphy, Small } from "../../layouts/Typography/Typography";
@@ -12,11 +12,9 @@ import { Paginator } from "../../buttons/Paginator/Paginator";
 import { EyeIcon, TrashIcon } from "../../../utils/constants/icons";
 import { Input } from "../../inputs/Input/Input";
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
-import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import { Status } from "@components/layouts/Status/Status";
 import { debounce } from "@utils/helpers/debounce";
 import { AgentStatus } from "@interfaces/IAgent";
-import { Dropdown } from "@components/inputs/Dropdown/Dropdown";
 import { DropdownDesktop } from "@components/inputs/Dropdown/Dropdown.desktop";
 import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 import { RequestStates } from "enums/RequestStates";
@@ -84,18 +82,23 @@ export const ColaboratorsTab: React.FC = () => {
     row: any,
     index: number
   ) => {
-    const customCells: { [columnField: string]: JSX.Element } = {
-      name: (
-        <>
-          {row.image && <Avatar src={row.image} />}
-          <Small>{row[column.field]}</Small>
-        </>
-      ),
-      status: (
-        <Status status={row[column.field]}>
-          {row[column.field] === AgentStatus.Active ? "Ativo" : "Inativo"}
-        </Status>
-      ),
+    const customCells: { [columnField: string]: CustomCell } = {
+      name: {
+        component: (
+          <>
+            {row.image && <Avatar src={row.image} />}
+            <Small>{row[column.field]}</Small>
+          </>
+        ),
+        options: { bold: true },
+      },
+      status: {
+        component: (
+          <Status status={row[column.field]}>
+            {row[column.field] === AgentStatus.Active ? "Ativo" : "Inativo"}
+          </Status>
+        ),
+      },
     };
 
     return customCells[column.field];
@@ -120,6 +123,7 @@ export const ColaboratorsTab: React.FC = () => {
       {state === RequestStates.completed || state === RequestStates.empty ? (
         <PaginatorContextProvider>
           <TableList
+            scrollable
             rowIdField={"agent_id"}
             rows={agents}
             columns={columns}

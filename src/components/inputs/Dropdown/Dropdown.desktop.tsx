@@ -17,6 +17,7 @@ const DropdownContent = styled.div`
   right: 0px;
   top: 30px;
   display: flex;
+
   flex-direction: column;
 
   width: 340px;
@@ -25,7 +26,7 @@ const DropdownContent = styled.div`
   border-radius: 8px;
   box-shadow: ${shadows.level2};
   background: ${colors.neutral.white};
-  z-index: 2;
+  z-index: 50;
 `;
 
 const DisabledDropdownItem = css`

@@ -1,11 +1,10 @@
-import { TableCell } from "@components/layouts/TableList/TableList.desktop";
 import styled from "@emotion/styled";
 import { RolePermissions } from "enums/GroupPermissions";
 import { IRole, IRoleGroupRule } from "../../../interfaces/IRole";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
 import { Checkbox } from "../../buttons/Checkbox/Checkbox";
 import { Input } from "../../inputs/Input/Input";
-import { TableList } from "../../layouts/TableList/TableList";
+import { CustomCell, TableList } from "../../layouts/TableList/TableList";
 import { Paragraphy } from "../../layouts/Typography/Typography";
 
 const RoleInfoContainer = styled.div`
@@ -59,14 +58,19 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     },
   ];
 
-  const handleCellSwitching = (column: ITableColumn, row: IRoleGroupRule) => {
+  const handleCellSwitching = (
+    column: ITableColumn,
+    row: IRoleGroupRule
+  ): CustomCell | undefined => {
     if (column.field !== "role") {
-      return (
-        <Checkbox
-          field={column.field}
-          checked={row.permissions.includes(column.field as RolePermissions)}
-        />
-      );
+      return {
+        component: (
+          <Checkbox
+            field={column.field}
+            checked={row.permissions.includes(column.field as RolePermissions)}
+          />
+        ),
+      };
     }
   };
 

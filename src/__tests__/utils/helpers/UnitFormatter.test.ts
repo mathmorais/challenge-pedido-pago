@@ -1,4 +1,4 @@
-import { DocumentTypes, IAgent, Phone } from "@interfaces/IAgent";
+import { DocumentTypes, Phone } from "@interfaces/IAgent";
 import { UnitsFormatter } from "@utils/helpers/UnitsFormatter";
 
 const { formatDocument, formatBirthDate, formatPhoneNumber } =

@@ -13,7 +13,7 @@ const LinkWrapperContainer = styled.a`
 export const LinkWrapper: React.FC<LinkProps> = ({ children, ...props }) => {
   return (
     <Link {...props} passHref>
-      <LinkWrapperContainer>{children}</LinkWrapperContainer>
+      <LinkWrapperContainer role={"link"}>{children}</LinkWrapperContainer>
     </Link>
   );
 };

@@ -86,6 +86,7 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
       <RoleInfoSection>
         <Paragraphy>Listagem de permissões</Paragraphy>
         <TableList
+          scrollable={false}
           mobileVersion={false}
           cellSwap={handleCellSwitching}
           columns={columns}

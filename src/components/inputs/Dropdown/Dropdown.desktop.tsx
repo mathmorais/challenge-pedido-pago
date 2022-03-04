@@ -13,10 +13,9 @@ const DropdownWrapper = styled.div`
 `;
 
 const DropdownContent = styled.div`
+  display: flex;
   position: absolute;
   right: 0px;
-  top: 30px;
-  display: flex;
 
   flex-direction: column;
 
@@ -26,7 +25,6 @@ const DropdownContent = styled.div`
   border-radius: 8px;
   box-shadow: ${shadows.level2};
   background: ${colors.neutral.white};
-  z-index: 50;
 `;
 
 const DisabledDropdownItem = css`
@@ -46,7 +44,6 @@ const DropdownItem = styled(Button)<{ enabled: boolean }>`
   display: inline-flex;
   gap: 16px;
   padding: 17px;
-
   &:hover {
     background: ${colors.neutral.neutral1};
   }
@@ -86,14 +83,16 @@ export const DropdownDesktop: React.FC<Omit<DropdownProps, "mobile">> = ({
   };
 
   return (
-    <DropdownWrapper>
+    <div>
       <Button
         onBlur={() => setActive(false)}
         onClick={() => setActive(!active)}
       >
         <MoreIcon />
       </Button>
-      {active && <DropdownContent>{handleSerializeItems()}</DropdownContent>}
-    </DropdownWrapper>
+      <DropdownWrapper>
+        {active && <DropdownContent>{handleSerializeItems()}</DropdownContent>}
+      </DropdownWrapper>
+    </div>
   );
 };

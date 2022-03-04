@@ -2,10 +2,14 @@ import { IDropdownItem } from "@interfaces/IDropdownItem";
 import { ITableColumn } from "@interfaces/ITableColumn";
 import { PlataformContext } from "contexts/PlataformContext";
 import { useContext } from "react";
-import { TableCellStyles, TableListDesktop } from "./TableList.desktop";
+import {
+  TableCellStyles,
+  TableListBodyStyle,
+  TableListDesktop,
+} from "./TableList.desktop";
 import { TableListMobile } from "./TableList.mobile";
 
-type CustomCell = {
+export type CustomCell = {
   options?: TableCellStyles;
   component: JSX.Element;
 };
@@ -18,12 +22,12 @@ export type TableListProps = {
     column: ITableColumn,
     row: any,
     index: number
-  ) => JSX.Element | undefined;
+  ) => CustomCell | undefined;
   additionalCells?: CustomCell;
   mobile?: {
     drodpdownItems: IDropdownItem[];
   };
-};
+} & TableListBodyStyle;
 
 export const TableList: React.FC<
   { mobileVersion?: boolean } & TableListProps

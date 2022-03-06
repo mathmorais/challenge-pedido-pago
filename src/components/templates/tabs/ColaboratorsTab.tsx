@@ -32,7 +32,7 @@ const ColaboratorsSearchSection = styled.section`
 `;
 
 export const ColaboratorsTab: React.FC = () => {
-  const { state, agents, handleFilterAgents } = useContext(OrganizationContext);
+  const { state, agents, handleFilterData } = useContext(OrganizationContext);
   const router = useRouter();
 
   const columns: ITableColumn[] = [
@@ -104,10 +104,13 @@ export const ColaboratorsTab: React.FC = () => {
     return customCells[column.field];
   };
 
-  const handleInputSearch = useCallback(debounce(handleFilterAgents), []);
+  const handleInputSearch = useCallback(
+    debounce((value: string) => handleFilterData("agents", value)),
+    []
+  );
 
   useEffect(() => {
-    handleFilterAgents("");
+    handleFilterData("agents", "");
   }, []);
 
   return (

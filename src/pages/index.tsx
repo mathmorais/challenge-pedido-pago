@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { NextPage, GetStaticProps } from "next";
+import type { GetStaticProps, LayoutNextPage, NextPage } from "next";
 import { ColaboratorsTab } from "../components/templates/tabs/ColaboratorsTab";
 import { OrganizationContextProvider } from "../contexts/OrganizationContext";
 import { IAgents } from "../interfaces/IAgents";
@@ -9,12 +9,13 @@ import { RolesTab } from "../components/templates/tabs/RolesTab";
 import { Layout } from "../components/layouts/Layout/Layout";
 import { Tabs } from "../components/layouts/Tabs/Tabs";
 import { DropdownContextProvider } from "contexts/DropdownContext";
+import { ReactElement } from "react";
 
 type ColaboratorsListProps = {
   agents: IAgents[];
 };
 
-const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
+const Organization: LayoutNextPage<ColaboratorsListProps> = ({ agents }) => {
   const tabs: ITab[] = [
     {
       title: "Colaboradores",
@@ -35,17 +36,19 @@ const ColaboratorsList: NextPage<ColaboratorsListProps> = ({ agents }) => {
   ];
 
   return (
-    <Layout pageTitle="Organização - Pedido Pago">
-      <TablePageTemplate title="Organização">
-        <DropdownContextProvider>
-          <Tabs tabs={tabs} />
-        </DropdownContextProvider>
-      </TablePageTemplate>
-    </Layout>
+    <TablePageTemplate title="Organização">
+      <DropdownContextProvider>
+        <Tabs tabs={tabs} />
+      </DropdownContextProvider>
+    </TablePageTemplate>
   );
 };
 
-export default ColaboratorsList;
+Organization.getLayout = (page) => {
+  return <Layout>{page}</Layout>;
+};
+
+export default Organization;
 
 export const getStaticProps: GetStaticProps = async () => {
   const url = `${process.env.API_URL}/agents`;

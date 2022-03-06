@@ -1,14 +1,21 @@
 import type { AppProps } from "next/app";
 import { Global } from "@emotion/react";
 import { GlobalStyles } from "../styles/Global";
+import { LayoutNextPage } from "next";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
+type AppPropsWithLayout = AppProps & {
+  Component: LayoutNextPage;
+};
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
+  return getLayout(
     <>
       <Global styles={GlobalStyles} />
       <Component {...pageProps} />
     </>
   );
-}
+};
 
-export default MyApp;
+export default App;

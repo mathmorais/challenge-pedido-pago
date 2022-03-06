@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, LayoutNextPage } from "next";
 import { ColaboratorInfo } from "../../components/templates/pages/ColaboratorInfo";
 import { Layout } from "../../components/layouts/Layout/Layout";
 import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
@@ -9,14 +9,16 @@ type ColaboratorInfoProps = {
   agent: IAgent;
 };
 
-const Colaborator: React.FC<ColaboratorInfoProps> = ({ agent }) => {
+const Colaborator: LayoutNextPage<ColaboratorInfoProps> = ({ agent }) => {
   return (
-    <Layout pageTitle="Colaborador - Pedido Pago">
-      <TablePageTemplate withBackButton title="Detalhes do colaborador">
-        <ColaboratorInfo colaborator={agent} />
-      </TablePageTemplate>
-    </Layout>
+    <TablePageTemplate withBackButton title="Detalhes do colaborador">
+      <ColaboratorInfo colaborator={agent} />
+    </TablePageTemplate>
   );
+};
+
+Colaborator.getLayout = (page) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default Colaborator;

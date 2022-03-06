@@ -1,5 +1,6 @@
 import axios from "axios";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, LayoutNextPage } from "next";
+import { ReactElement } from "react";
 import { Layout } from "../../components/layouts/Layout/Layout";
 import { RoleInfo } from "../../components/templates/pages/RoleInfo";
 import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
@@ -9,14 +10,16 @@ type RoleProps = {
   role: IRole;
 };
 
-const Role: React.FC<RoleProps> = ({ role }) => {
+const Role: LayoutNextPage<RoleProps> = ({ role }) => {
   return (
-    <Layout pageTitle="Cargo - Pedido Pago">
-      <TablePageTemplate withBackButton title="Cargos e permissões">
-        <RoleInfo {...role} />
-      </TablePageTemplate>
-    </Layout>
+    <TablePageTemplate withBackButton title="Cargos e permissões">
+      <RoleInfo {...role} />
+    </TablePageTemplate>
   );
+};
+
+Role.getLayout = (page) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default Role;

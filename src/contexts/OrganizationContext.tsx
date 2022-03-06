@@ -1,23 +1,17 @@
 import axios from "axios";
 import { RequestStates } from "enums/RequestStates";
-import React, {
-  createContext,
-  createRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useRef, useState } from "react";
 import { IAgents } from "../interfaces/IAgents";
 import { IRoles } from "../interfaces/IRoles";
+
+type OrganizationDataTypes = "agents" | "roles";
 
 type AgentsListContextProps = {
   state: RequestStates;
   agents: IAgents[];
   roles: IRoles[];
-  handleGetAgents(): Promise<void>;
-  handleGetRoles(): Promise<void>;
-  handleFilterAgents(filter: string): void;
-  handleFilterRoles(filter: string): void;
+  handleGetData(type: OrganizationDataTypes): Promise<void>;
+  handleFilterData(type: OrganizationDataTypes, filter: string): Promise<void>;
 };
 
 export const OrganizationContext = createContext({} as AgentsListContextProps);
@@ -33,40 +27,47 @@ export const OrganizationContextProvider: React.FC<{
   const [roles, setRoles] = useState<IRoles[]>([]);
   const [state, setState] = useState<RequestStates>(RequestStates.empty);
 
-  const handleGetAgents = async () => {
-    if (!dataStore.current.agents) {
-      setState(RequestStates.started);
+  const organizationDataTypes = {
+    agents: {
+      dataResponseProp: "items",
+      dataGetter: agents,
+      dataSetter: setAgents,
+    },
+    roles: {
+      dataResponseProp: "roles",
+      dataGetter: roles,
+      dataSetter: setRoles,
+    },
+  };
+
+  const handleGetData = async (type: OrganizationDataTypes) => {
+    const { dataSetter, dataResponseProp } = organizationDataTypes[type];
+
+    if (!dataStore.current[type]) {
       setState(RequestStates.loading);
-      const { data } = await axios.get<{ items: IAgents[] }>("/api/agents");
-      setAgents(data.items);
+      const response = await axios.get(`/api/${type}`);
+      const data = response.data[dataResponseProp];
+
+      dataSetter(data);
       setState(RequestStates.completed);
-      dataStore.current.agents = data.items;
+
+      dataStore.current[type] = data;
     }
   };
 
-  const handleGetRoles = async () => {
-    if (!dataStore.current.roles) {
-      setState(RequestStates.started);
-      setState(RequestStates.loading);
-      const { data } = await axios.get<{ roles: IRoles[] }>("/api/roles");
-      setRoles(data.roles);
-      setState(RequestStates.completed);
-      dataStore.current.roles = data.roles;
-    }
-  };
+  const handleFilterData = async (
+    type: OrganizationDataTypes,
+    filter: string
+  ) => {
+    const { dataGetter, dataSetter } = organizationDataTypes[type];
 
-  const handleFilterAgents = (filter: string) => {
-    const filtredArray = dataStore.current.agents?.filter((agent) =>
-      agent.name.toLowerCase().includes(filter.toLocaleLowerCase())
-    );
-    setAgents(filtredArray ?? agents);
-  };
+    const data = [...(dataStore.current[type] ?? [])];
 
-  const handleFilterRoles = (filter: string) => {
-    const filtredArray = dataStore.current.roles?.filter((role) =>
-      role.name.toLowerCase().includes(filter.toLocaleLowerCase())
-    );
-    setRoles(filtredArray ?? roles);
+    const filtredArray = data?.filter((dataItem) => {
+      return dataItem.name.toLowerCase().includes(filter.toLocaleLowerCase());
+    }) as any[];
+
+    dataSetter(filtredArray ?? dataGetter);
   };
 
   return (
@@ -75,10 +76,8 @@ export const OrganizationContextProvider: React.FC<{
         state,
         agents,
         roles,
-        handleGetAgents,
-        handleGetRoles,
-        handleFilterAgents,
-        handleFilterRoles,
+        handleGetData,
+        handleFilterData,
       }}
     >
       {children}

@@ -41,7 +41,7 @@ const RoleSearchSection = styled.section`
 
 export const RolesTab: React.FC = () => {
   const router = useRouter();
-  const { state, roles, handleGetRoles, handleFilterRoles } =
+  const { state, roles, handleGetData, handleFilterData } =
     useContext(OrganizationContext);
 
   const columns: ITableColumn[] = [
@@ -87,12 +87,15 @@ export const RolesTab: React.FC = () => {
     },
   ];
 
-  useLayoutEffect(() => {
-    handleGetRoles();
-    handleFilterRoles("");
-  }, []);
+  const handleOnChange = useCallback(
+    debounce((value: string) => handleFilterData("roles", value)),
+    []
+  );
 
-  const handleOnChange = useCallback(debounce(handleFilterRoles), []);
+  useEffect(() => {
+    handleGetData("roles");
+    handleFilterData("roles", "");
+  }, []);
 
   return (
     <RolesContainer>

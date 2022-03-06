@@ -97,7 +97,7 @@ export const PaginatorDesktop: React.FC<PaginatorProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
 
   const step = 5;
-  const totalPages = Math.ceil(totalItems / limit);
+  const totalPages = Math.ceil(totalItems / limit) || 1;
 
   const handleGenerateStepItems = () => {
     let stepItems = {};
@@ -125,16 +125,16 @@ export const PaginatorDesktop: React.FC<PaginatorProps> = ({
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [totalPages]);
+
+  useEffect(() => {
     if (currentPage <= 1) {
       setOffset(0);
     }
   }, [currentPage]);
 
   const handleLimitSelector = (value: string | undefined) => {
-    if (currentPage > 1) {
-      setCurrentPage(1);
-    }
-
     setLimit(Number(value) || limit);
   };
 
@@ -143,7 +143,8 @@ export const PaginatorDesktop: React.FC<PaginatorProps> = ({
       <PaginatorInfo>
         {labelCount && (
           <Paragraphy>
-            Mostrando {limit} de {totalItems} registros
+            Mostrando {limit > totalItems ? totalItems : limit} de {totalItems}{" "}
+            registros
           </Paragraphy>
         )}
 

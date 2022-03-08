@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { colors } from "@utils/constants/colors";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 import { shadows } from "@utils/constants/shadows";
 
 const SidebarContainer = styled.aside`
@@ -10,7 +11,7 @@ const SidebarContainer = styled.aside`
   background: ${colors.neutral.white};
   box-shadow: ${shadows.level1};
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     display: none;
   }
 `;

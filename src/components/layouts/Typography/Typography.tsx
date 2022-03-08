@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 import { typography } from "@utils/constants/typography";
 
 export const Small = styled.small`
@@ -20,13 +21,14 @@ export const Paragraphy = styled.p`
 export const Subtitle = styled.p`
   font-size: ${typography.subTitle.size};
   font-weight: ${typography.subTitle.weight};
+  line-height: ${typography.subTitle.lineHeight};
 `;
 
 export const Title = styled.h2`
   font-size: ${typography.title.size};
   font-weight: ${typography.title.weight};
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     font-size: 2.4rem;
   }
 `;

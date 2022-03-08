@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { colors } from "@utils/constants/colors";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 import { shadows } from "@utils/constants/shadows";
 
 const TableContainer = styled.div`
@@ -12,7 +13,7 @@ const TableContainer = styled.div`
   box-shadow: ${shadows.level1};
   border-radius: 8px;
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     padding: 50px 16px;
   }
 `;

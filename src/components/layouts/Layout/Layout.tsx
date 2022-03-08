@@ -4,6 +4,7 @@ import { PlataformContextProvider } from "contexts/PlataformContext";
 import { colors } from "@utils/constants/colors";
 import { Header } from "../Header/Header";
 import { Sidebar } from "../Sidebar/Sidebar";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 
 const Container = styled.div`
   width: 100%;
@@ -34,7 +35,7 @@ const Content = styled.section`
   margin: auto;
   padding: 50px 6px;
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     padding-top: 40px;
     padding-bottom: 24px;
   }

@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 import { RolePermissions } from "enums/GroupPermissions";
 import { IRole, IRoleGroupRule } from "../../../interfaces/IRole";
 import { ITableColumn } from "../../../interfaces/ITableColumn";
@@ -19,7 +20,7 @@ const RolefInfoRow = styled.div`
   gap: 24px;
   margin-bottom: 40px;
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     flex-direction: column;
   }
 `;
@@ -44,17 +45,17 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
     {
       field: RolePermissions.Read,
       headerName: "Ler",
-      width: 96,
+      width: 150,
     },
     {
       field: RolePermissions.Write,
       headerName: "Editar",
-      width: 96,
+      width: 150,
     },
     {
       field: RolePermissions.Delete,
       headerName: "Excluir",
-      width: 96,
+      width: 150,
     },
   ];
 

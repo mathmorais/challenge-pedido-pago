@@ -48,18 +48,17 @@ export const RolesTab: React.FC = () => {
     {
       field: "name",
       headerName: "Cargo",
-      width: "100%",
+      width: "200px",
     },
     {
       field: "departament",
       headerName: "Departamento",
-      width: "100%",
+      width: "200px",
     },
     {
       field: "agents_quantity",
       headerName: "Colaboradores",
-      width: "100%",
-      spacing: 200,
+      width: "200px",
     },
   ];
 

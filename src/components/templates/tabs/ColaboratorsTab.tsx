@@ -118,7 +118,7 @@ export const ColaboratorsTab: React.FC = () => {
       <ColaboratorsSearchSection>
         <Input
           onChange={(event) => handleInputSearch(event.currentTarget.value)}
-          label="Pesquisa por"
+          label="Pesquisar por"
           placeholder="Pesquise por nome ou cpf"
         />
       </ColaboratorsSearchSection>

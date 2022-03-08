@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { ReactNode, useContext } from "react";
-
 import { colors } from "../../../utils/constants/colors";
 import { Small } from "../Typography/Typography";
 import { PaginatorContext } from "contexts/PaginatorContext";
@@ -8,6 +7,7 @@ import { TableListProps } from "./TableList";
 import { AgentStatus } from "@interfaces/IAgent";
 import { typography } from "@utils/constants/typography";
 import { ITableColumn } from "@interfaces/ITableColumn";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 
 type TableRowStyles = {
   inactive?: boolean;
@@ -60,8 +60,14 @@ const TableHeader = styled.th<TableListColumnsStyle>`
   padding-left: ${(props) => props.cellSpacing}px;
   width: ${(props) => props.width};
   min-width: ${(props) => props.minWidth};
+
   ${Small} {
     font-weight: 600;
+  }
+
+  ${mediaQueries.mediaQuery[0]} {
+    width: ${(props) => props.width && Number(props.width) / 1.75}px;
+    min-width: ${(props) => props.minWidth && Number(props.width) / 1.75}px;
   }
 `;
 
@@ -91,6 +97,11 @@ export const TableCell = styled.td<TableCellStyles>`
   ${Small} {
     font-weight: ${(props) => props.bold && "600"};
   }
+
+  ${mediaQueries.mediaQuery[0]} {
+    width: ${(props) => props.width && Number(props.width) / 1.75}px;
+    min-width: ${(props) => props.minWidth && Number(props.width) / 1.75}px;
+  }
 `;
 
 export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
@@ -102,12 +113,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
 
   const handleSerializeHeaders = () => {
     return columns.map((column, index) => (
-      <TableHeader
-        width={column.width}
-        minWidth={column.minWidth}
-        key={index}
-        {...props}
-      >
+      <TableHeader key={index} {...column} {...props}>
         {column.headerName}
       </TableHeader>
     ));
@@ -128,11 +134,7 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
               props.cellSwap && props.cellSwap(column, row, index);
 
             return (
-              <TableCell
-                width={column.width}
-                key={index}
-                {...swappedCell?.options}
-              >
+              <TableCell {...column} key={index} {...swappedCell?.options}>
                 {swappedCell ? (
                   swappedCell?.component
                 ) : (

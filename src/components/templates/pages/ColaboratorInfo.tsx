@@ -11,6 +11,7 @@ import {
   IdIcon,
   PhoneIcon,
 } from "../../../utils/constants/icons";
+import { mediaQueries } from "@utils/constants/mediaQueries";
 
 const ColaboratorInfoContainer = styled.div`
   display: flex;
@@ -43,7 +44,7 @@ const SectionRow = styled.div`
   gap: 24px;
   margin-bottom: 24px;
 
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     flex-wrap: wrap;
   }
 `;
@@ -62,7 +63,7 @@ const ProfileSelectionCardGrid = styled.div`
   display: grid;
   grid-template: 1fr 1fr / 1fr 1fr;
   gap: 24px;
-  @media only screen and (max-width: 960px) {
+  ${mediaQueries.mediaQuery[0]} {
     grid-template: 1fr / 1fr;
   }
 `;

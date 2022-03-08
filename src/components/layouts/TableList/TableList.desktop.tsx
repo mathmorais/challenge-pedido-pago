@@ -7,17 +7,19 @@ import { PaginatorContext } from "contexts/PaginatorContext";
 import { TableListProps } from "./TableList";
 import { AgentStatus } from "@interfaces/IAgent";
 import { typography } from "@utils/constants/typography";
+import { ITableColumn } from "@interfaces/ITableColumn";
 
 type TableRowStyles = {
   inactive?: boolean;
   cellSpacing?: number;
 };
 
+type TableSizingStyle = Pick<ITableColumn, "width" | "minWidth">;
+
 export type TableCellStyles = {
-  width?: string | number;
   bold?: boolean;
   align?: "left";
-};
+} & TableSizingStyle;
 
 export type TableListBodyStyle = {
   scrollable?: boolean;
@@ -25,8 +27,7 @@ export type TableListBodyStyle = {
 
 type TableListColumnsStyle = {
   cellSpacing?: number;
-  width?: string | number;
-};
+} & TableSizingStyle;
 
 const Table = styled.table`
   display: flex;
@@ -58,6 +59,7 @@ const TableHeader = styled.th<TableListColumnsStyle>`
   font-size: ${typography.small.size};
   padding-left: ${(props) => props.cellSpacing}px;
   width: ${(props) => props.width};
+  min-width: ${(props) => props.minWidth};
   ${Small} {
     font-weight: 600;
   }
@@ -84,6 +86,7 @@ export const TableCell = styled.td<TableCellStyles>`
   gap: 8px;
   width: ${(props) => props.width}px;
   margin-left: ${(props) => (props.align === "left" ? "auto" : "none")};
+  padding-right: 5px;
 
   ${Small} {
     font-weight: ${(props) => props.bold && "600"};
@@ -99,7 +102,12 @@ export const TableListDesktop: React.FC<TableListProps & TableRowStyles> = ({
 
   const handleSerializeHeaders = () => {
     return columns.map((column, index) => (
-      <TableHeader width={column.width} key={index} {...props}>
+      <TableHeader
+        width={column.width}
+        minWidth={column.minWidth}
+        key={index}
+        {...props}
+      >
         {column.headerName}
       </TableHeader>
     ));

@@ -4,7 +4,7 @@ import { Paragraphy } from "@components/layouts/Typography/Typography";
 import { colors } from "@utils/constants/colors";
 import { Button, ButtonAttributes } from "../Button";
 
-const ButtonActionContainer = styled(Button)`
+const ButtoDefaultContainer = styled(Button)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,9 +26,9 @@ export const ButtonDefault: React.FC<ButtonDefaultProps> = ({
   const Icon = icon;
 
   return (
-    <ButtonActionContainer {...props}>
+    <ButtoDefaultContainer {...props}>
       <Paragraphy>{children}</Paragraphy>
       {Icon && Icon}
-    </ButtonActionContainer>
+    </ButtoDefaultContainer>
   );
 };

@@ -8,9 +8,6 @@ export const GlobalStyles = css`
     box-sizing: border-box;
   }
 
-  &:root {
-  }
-
   html {
     font-size: 62.5%;
   }

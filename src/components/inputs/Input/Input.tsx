@@ -49,7 +49,7 @@ const InputField = styled.input<InputStyleProps>`
   }
 `;
 
-const SelectFieldset = styled.fieldset`
+const Fieldset = styled.fieldset`
   position: absolute;
   inset: -5px 0 0 0;
   border: 2px solid ${colors.neutral.neutral2};
@@ -82,11 +82,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        <SelectFieldset>
+        <Fieldset>
           <legend>
             <Span>{label}</Span>
           </legend>
-        </SelectFieldset>
+        </Fieldset>
       </InputWrapper>
     );
   }

@@ -18,7 +18,7 @@ export class UnitsFormatter {
 
   formatDocument = (type: DocumentTypes, value: string) => {
     const supportedTypes = {
-      CPF: this.formatCPF,
+      cpf: this.formatCPF,
     };
 
     return supportedTypes[type](value);
@@ -43,7 +43,7 @@ export class UnitsFormatter {
     return number < 10 ? `0${number}` : `${number}`;
   };
 
-  formatBirthDate = (birthDate: Date) => {
+  formatBirthDate = (birthDate: string) => {
     const date = new Date(birthDate);
     const month: string = this.handleSerializeDateNumber(date.getMonth() + 1);
     const day: string = this.handleSerializeDateNumber(date.getDate());

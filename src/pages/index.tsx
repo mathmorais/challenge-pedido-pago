@@ -1,15 +1,15 @@
 import axios from "axios";
-import type { GetStaticProps, LayoutNextPage, NextPage } from "next";
-import { ColaboratorsTab } from "../components/templates/tabs/ColaboratorsTab";
-import { OrganizationContextProvider } from "../contexts/OrganizationContext";
+import type { GetStaticProps, LayoutNextPage } from "next";
 import { IAgents } from "../interfaces/IAgents";
 import { ITab } from "../interfaces/ITab";
-import { TablePageTemplate } from "../components/templates/pages/TablePageTemplate";
-import { RolesTab } from "../components/templates/tabs/RolesTab";
+import { TablePageTemplate } from "../components/templates/TablePageTemplate/TablePageTemplate";
+import { RolesTab } from "../components/tabs/RolesTab/RolesTab";
 import { Layout } from "../components/layouts/Layout/Layout";
 import { Tabs } from "../components/layouts/Tabs/Tabs";
 import { DropdownContextProvider } from "contexts/DropdownContext";
-import { ReactElement } from "react";
+import { OrganizationContextProvider } from "@contexts/OrganizationContext";
+import { ColaboratorsTab } from "@components/tabs/ColaboratorsTab/ColaboratorsTab";
+import { getMockedAgents } from "@utils/helpers/getMockedAgents";
 
 type ColaboratorsListProps = {
   agents: IAgents[];
@@ -50,14 +50,12 @@ Organization.getLayout = (page) => {
 
 export default Organization;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const url = `${process.env.API_URL}/agents`;
-
-  const { data } = await axios.get(url);
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { agents } = getMockedAgents();
 
   return {
     props: {
-      agents: data.items,
+      agents: agents,
     },
     revalidate: 600, // 10 minutes
   };

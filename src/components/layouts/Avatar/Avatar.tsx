@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import Image, { ImageProps } from "next/image";
+import { Small } from "../Typography/Typography";
 
-type AvatarProps = {
+type AvatarPropsStyles = {
   size?: number;
 };
 
-export const AvatarContainer = styled.div<AvatarProps>`
+export const AvatarContainer = styled.div<AvatarPropsStyles>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,15 +15,31 @@ export const AvatarContainer = styled.div<AvatarProps>`
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+
+  ${Small} {
+    font-weight: 500;
+  }
 `;
 
-export const Avatar: React.FC<ImageProps & AvatarProps> = ({
+type AvatarProps = {
+  label?: string;
+  src?: string;
+} & Omit<ImageProps, "src"> &
+  AvatarPropsStyles;
+
+export const Avatar: React.FC<AvatarProps> = ({
   size = 32,
+  src,
+  label,
   ...props
 }) => {
   return (
     <AvatarContainer size={size}>
-      <Image layout="fill" alt={props.alt} {...props} />
+      {!src ? (
+        <Small>{label}</Small>
+      ) : (
+        <Image layout="fill" alt={props.alt} src={src} {...props} />
+      )}
     </AvatarContainer>
   );
 };

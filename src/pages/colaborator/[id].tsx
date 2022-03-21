@@ -1,9 +1,9 @@
-import axios from "axios";
 import { GetServerSideProps, LayoutNextPage } from "next";
-import { ColaboratorInfo } from "../../components/templates/pages/ColaboratorInfo";
+import { ColaboratorInfo } from "../../components/pages/ColaboratorInfo";
 import { Layout } from "../../components/layouts/Layout/Layout";
-import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
+import { TablePageTemplate } from "../../components/templates/TablePageTemplate/TablePageTemplate";
 import { IAgent } from "../../interfaces/IAgent";
+import { getMockedAgent } from "@utils/helpers/getMockedAgent";
 
 type ColaboratorInfoProps = {
   agent: IAgent;
@@ -24,14 +24,11 @@ Colaborator.getLayout = (page) => {
 export default Colaborator;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const colaboratorId = context.params?.id || "1";
-
-  const url = `${process.env.API_URL}/agent/${colaboratorId}`;
-  const { data } = await axios.get(url);
+  const { agent } = getMockedAgent();
 
   return {
     props: {
-      agent: data.agent,
+      agent: agent,
     },
   };
 };

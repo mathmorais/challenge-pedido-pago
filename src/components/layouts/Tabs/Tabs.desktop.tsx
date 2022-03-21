@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useEffect, useMemo, useState } from "react";
-
+import { useLayoutEffect, useState } from "react";
 import { ITab } from "@interfaces/ITab";
 import { colors } from "@utils/constants/colors";
 import { Span } from "@components/layouts/Typography/Typography";
 import { TabsProps } from "./Tabs";
+import { animations } from "@utils/constants/animations";
 
 const TabWrapper = styled.div`
   display: flex;
@@ -29,6 +29,7 @@ const TabItemSelected = css`
     width: 100%;
     transform: translateY(2px);
     background: ${colors.primary.default};
+    ${animations.FadeIn}
   }
 `;
 
@@ -50,7 +51,7 @@ const TabItem = styled.button<{ selected?: boolean }>`
 export const TabsDesktop: React.FC<TabsProps> = ({ tabs }) => {
   const [currentTab, setCurrentTab] = useState<ITab>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setCurrentTab(tabs[0]);
   }, []);
 

@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { mediaQueries } from "@utils/constants/mediaQueries";
 import { RolePermissions } from "enums/GroupPermissions";
-import { IRole, IRoleGroupRule } from "../../../interfaces/IRole";
-import { ITableColumn } from "../../../interfaces/ITableColumn";
-import { Checkbox } from "../../buttons/Checkbox/Checkbox";
-import { Input } from "../../inputs/Input/Input";
-import { CustomCell, TableList } from "../../layouts/TableList/TableList";
-import { Paragraphy } from "../../layouts/Typography/Typography";
+import { IRole, IRoleGroupRule } from "../../interfaces/IRole";
+import { ITableColumn } from "../../interfaces/ITableColumn";
+import { Checkbox } from "../buttons/Checkbox/Checkbox";
+import { Input } from "../inputs/Input/Input";
+import { CustomCell, TableList } from "../layouts/TableList/TableList";
+import { Paragraphy } from "../layouts/Typography/Typography";
 
 const RoleInfoContainer = styled.div`
   display: flex;
@@ -43,17 +43,17 @@ export const RoleInfo: React.FC<IRole> = ({ name, department, grouprules }) => {
       width: "100%",
     },
     {
-      field: RolePermissions.Read,
+      field: "read",
       headerName: "Ler",
       width: 150,
     },
     {
-      field: RolePermissions.Write,
+      field: "write",
       headerName: "Editar",
       width: 150,
     },
     {
-      field: RolePermissions.Delete,
+      field: "delete",
       headerName: "Excluir",
       width: 150,
     },

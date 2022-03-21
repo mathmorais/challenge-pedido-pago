@@ -1,6 +1,6 @@
 import { RolePermissions } from "enums/GroupPermissions";
 export interface IRoleGroupRule {
-  role: "Financeiro";
+  role: string;
   permissions: RolePermissions[];
 }
 

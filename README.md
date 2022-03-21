@@ -10,7 +10,7 @@
 
 > 👨‍💻️ Desafio Front end Web - Pedido Pago
 
-<p align="middle" float="left">
+<p float="left">
     <img src=".github/assets/home.png" alt="Logo do projeto" height="325"/>
     <img src=".github/assets/home-mobile.png" alt="Logo do projeto" height="325"/>
 </p>

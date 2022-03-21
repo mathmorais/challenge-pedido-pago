@@ -1,35 +1,23 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
-import { useCallback, useContext, useEffect } from "react";
-
+import { useContext } from "react";
 import { IDropdownItem } from "@interfaces/IDropdownItem";
-import { CustomCell, TableList } from "../../layouts/TableList/TableList";
 import { ITableColumn } from "@interfaces/ITableColumn";
-import { OrganizationContext } from "../../../contexts/OrganizationContext";
-import { Paragraphy, Small } from "../../layouts/Typography/Typography";
-import { Avatar } from "../../layouts/Avatar/Avatar";
-import { Paginator } from "../../buttons/Paginator/Paginator";
-import { EyeIcon, TrashIcon } from "../../../utils/constants/icons";
-import { Input } from "../../inputs/Input/Input";
+
 import { PaginatorContextProvider } from "contexts/PaginatorContext";
 import { Status } from "@components/layouts/Status/Status";
-import { debounce } from "@utils/helpers/debounce";
 import { AgentStatus } from "@interfaces/IAgent";
 import { DropdownDesktop } from "@components/inputs/Dropdown/Dropdown.desktop";
 import { DropdownMobile } from "@components/inputs/Dropdown/Dropdown.mobile";
 import { RequestStates } from "enums/RequestStates";
 import { Loading } from "@components/layouts/Loading/Loading";
-
-const ColaboratorsTabContainer = styled.div`
-  & > ${Paragraphy} {
-    margin: 40px 0;
-    font-weight: 600;
-  }
-`;
-
-const ColaboratorsSearchSection = styled.section`
-  margin: 40px 0;
-`;
+import { OrganizationTabTemplate } from "@components/templates/OrganizationTabTemplate/OrganizationTabTemplate";
+import { OrganizationContext } from "@contexts/OrganizationContext";
+import { EyeIcon, TrashIcon } from "@utils/constants/icons";
+import { CustomCell, TableList } from "@components/layouts/TableList/TableList";
+import { Small } from "@components/layouts/Typography/Typography";
+import { Avatar } from "@components/layouts/Avatar/Avatar";
+import { Paginator } from "@components/buttons/Paginator/Paginator";
 
 export const ColaboratorsTab: React.FC = () => {
   const { state, agents, handleFilterData } = useContext(OrganizationContext);
@@ -77,11 +65,7 @@ export const ColaboratorsTab: React.FC = () => {
     },
   ];
 
-  const handleCellSwitching = (
-    column: ITableColumn,
-    row: any,
-    index: number
-  ) => {
+  const handleCellSwitching = (column: ITableColumn, row: any) => {
     const customCells: { [columnField: string]: CustomCell } = {
       name: {
         component: (
@@ -104,25 +88,15 @@ export const ColaboratorsTab: React.FC = () => {
     return customCells[column.field];
   };
 
-  const handleInputSearch = useCallback(
-    debounce((value: string) => handleFilterData("agents", value)),
-    []
-  );
-
-  useEffect(() => {
-    handleFilterData("agents", "");
-  }, []);
-
   return (
-    <ColaboratorsTabContainer>
-      <ColaboratorsSearchSection>
-        <Input
-          onChange={(event) => handleInputSearch(event.currentTarget.value)}
-          label="Pesquisar por"
-          placeholder="Pesquise por nome ou cpf"
-        />
-      </ColaboratorsSearchSection>
-      <Paragraphy>Listagem de colaboradores</Paragraphy>
+    <OrganizationTabTemplate
+      type="agents"
+      input={{
+        label: "Pesquisar por",
+        placeholder: "pesquise por nome ou cpf",
+      }}
+      title="Listagem de colaboradores"
+    >
       {state === RequestStates.completed || state === RequestStates.empty ? (
         <PaginatorContextProvider>
           <TableList
@@ -147,6 +121,6 @@ export const ColaboratorsTab: React.FC = () => {
       ) : (
         <Loading />
       )}
-    </ColaboratorsTabContainer>
+    </OrganizationTabTemplate>
   );
 };

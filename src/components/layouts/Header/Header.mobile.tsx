@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { colors } from "@utils/constants/colors";
 import { BrandIcon } from "@utils/constants/icons";
 import { Avatar } from "../Avatar/Avatar";
+import { HeaderProps } from "./Header";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -21,14 +22,12 @@ const HeaderContainer = styled.header`
   }
 `;
 
-type HeaderMobile = {
-  avatarUrl: string;
-};
-
-export const HeaderMobile: React.FC<HeaderMobile> = ({ avatarUrl }) => {
+export const HeaderMobile: React.FC<Omit<HeaderProps, "name">> = ({
+  avatarUrl,
+}) => {
   return (
     <HeaderContainer>
-      <Avatar alt={"Avatar"} src={avatarUrl} />
+      <Avatar alt={"Avatar"} />
       <BrandIcon alt={"Avatar"} />
     </HeaderContainer>
   );

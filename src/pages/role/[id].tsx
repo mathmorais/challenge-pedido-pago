@@ -1,9 +1,9 @@
+import { getMockedRole } from "@utils/helpers/getMockedRole";
 import axios from "axios";
 import { GetServerSideProps, LayoutNextPage } from "next";
-import { ReactElement } from "react";
 import { Layout } from "../../components/layouts/Layout/Layout";
-import { RoleInfo } from "../../components/templates/pages/RoleInfo";
-import { TablePageTemplate } from "../../components/templates/pages/TablePageTemplate";
+import { RoleInfo } from "../../components/pages/RoleInfo";
+import { TablePageTemplate } from "../../components/templates/TablePageTemplate/TablePageTemplate";
 import { IRole } from "../../interfaces/IRole";
 
 type RoleProps = {
@@ -27,13 +27,11 @@ export default Role;
 export const getServerSideProps: GetServerSideProps<RoleProps> = async (
   context
 ) => {
-  const roleId = context.params?.id || 1;
-  const url = `${process.env.API_URL}/role/${roleId}`;
-  const { data } = await axios.get(url);
+  const { role } = getMockedRole();
 
   return {
     props: {
-      role: data.role,
+      role: role,
     },
   };
 };

@@ -1,12 +1,19 @@
 <div align="left">
 
-<img src=".github/assets/Cover.png" alt="Logo do projeto" width="50%"/>
+<p>
+    <img a src=".github/assets/cover.png" alt="Logo do projeto" height="175"/>
+</p>
 
 </div>
 
 <hr/>
 
->  👨‍💻️ Desafio Front end Web - Pedido Pago
+> 👨‍💻️ Desafio Front end Web - Pedido Pago
+
+<p align="middle" float="left">
+    <img src=".github/assets/home.png" alt="Logo do projeto" height="325"/>
+    <img src=".github/assets/home-mobile.png" alt="Logo do projeto" height="325"/>
+</p>
 
 ### 💻 Principais techs
 

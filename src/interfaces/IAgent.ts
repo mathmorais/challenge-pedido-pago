@@ -1,6 +1,4 @@
-export enum DocumentTypes {
-  CPF = "CPF",
-}
+export type DocumentTypes = "cpf";
 
 export type Document = {
   type: DocumentTypes;
@@ -24,7 +22,7 @@ export interface IAgent {
   email: string;
   phone: Phone;
   document: Document;
-  birth_date: Date;
+  birth_date: string;
   image: string;
   department: string;
   branch: string;

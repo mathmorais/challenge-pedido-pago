@@ -3,11 +3,16 @@ import { useContext } from "react";
 import { HeaderDesktop } from "./Header.desktop";
 import { HeaderMobile } from "./Header.mobile";
 
+export type HeaderProps = {
+  name: string;
+  avatarUrl?: string;
+};
+
 export const Header: React.FC = () => {
   const { isMobile } = useContext(PlataformContext);
 
   const mockUserData = {
-    name: "Luiz Zlochevsky",
+    name: "Matheus Morais",
     avatarUrl: "/pngs/user-avatar.png",
   };
 

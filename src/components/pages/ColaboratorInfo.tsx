@@ -1,16 +1,12 @@
 import styled from "@emotion/styled";
-import { colors } from "../../../utils/constants/colors";
-import { IAgent } from "../../../interfaces/IAgent";
-import { UnitsFormatter } from "../../../utils/helpers/UnitsFormatter";
-import { Avatar } from "../../layouts/Avatar/Avatar";
-import { InformationCard } from "../../layouts/InformationCard/InformationCard";
-import { Select } from "../../inputs/Select/Select";
-import { Paragraphy, Subtitle } from "../../layouts/Typography/Typography";
-import {
-  CalendarIcon,
-  IdIcon,
-  PhoneIcon,
-} from "../../../utils/constants/icons";
+import { colors } from "../../utils/constants/colors";
+import { IAgent } from "../../interfaces/IAgent";
+import { UnitsFormatter } from "../../utils/helpers/UnitsFormatter";
+import { Avatar } from "../layouts/Avatar/Avatar";
+import { InformationCard } from "../layouts/InformationCard/InformationCard";
+import { Select } from "../inputs/Select/Select";
+import { Paragraphy, Subtitle } from "../layouts/Typography/Typography";
+import { CalendarIcon, IdIcon, PhoneIcon } from "../../utils/constants/icons";
 import { mediaQueries } from "@utils/constants/mediaQueries";
 
 const ColaboratorInfoContainer = styled.div`

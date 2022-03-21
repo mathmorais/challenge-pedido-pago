@@ -1,5 +1,1 @@
-export enum RolePermissions {
-  Write = "write",
-  Read = "read",
-  Delete = "delete",
-}
+export type RolePermissions = "write" | "read" | "delete";

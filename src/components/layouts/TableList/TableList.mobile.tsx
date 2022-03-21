@@ -35,7 +35,7 @@ export const TableListMobile: React.FC<TableListProps> = ({
         let component = undefined;
 
         if (column.field === "status") component = <Status status={rowValue} />;
-
+        1;
         data.push({ field: column.headerName, value: rowValue, component });
       });
 
